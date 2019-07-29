@@ -1,0 +1,361 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "Define your resources locations."
+              }
+        },
+        "databricksWorkspaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Define your Azure Databricks Workspace name."
+              }
+        },
+        "databricksTier": {
+            "defaultValue": "premium",
+            "type": "String",
+            "metadata": {
+                "description": "Define your Azure Databricks tier."
+              }
+        },
+        "storageAccountName": {
+            "type": "String",
+            "metadata": {
+                "description": "Define your storage account name."
+              }
+        },
+        "datafactoryName": {
+            "type": "String",
+            "metadata": {
+                "description": "Define your Azure Datafactory name."
+              }
+        },
+        "datafactoryLocation": {
+            "type": "String",            
+            "allowedValues": [
+            "Australia East",
+            "Canada Central",
+            "Central US",
+            "East US",
+            "East US 2",
+            "Japan East",
+            "North Europe",
+            "South Central US",
+            "Southeast Asia",
+            "UK South",
+            "West Central US",
+            "West Europe",
+            "West US",
+            "West US 2"
+            ]
+        },
+        "SQLadministratorLogin": {
+            "type": "String"
+        },
+        "SQLadministratorLoginPassword": {
+            "type": "SecureString"
+        },
+        "SQLserverName": {
+            "type": "String"
+        },  
+        "SQLdatabaseName": {
+            "type": "String"
+        },
+        "vaults_Trust_name": {
+            "type": "String",
+            "metadata": {
+                "description": "Specifies the name of the key vault."        
+              }
+        },        
+        "objectId": {
+            "type": "string",      
+            "metadata": {      
+              "description": "Specifies the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies. Get it by using Get-AzADUser or Get-AzADServicePrincipal cmdlets."
+      
+            }
+        },    
+        "application-id_secretValue": {      
+            "type": "securestring",      
+            "metadata": {      
+              "description": "Specifies the value of the application-id secret that you want to create. Application-id can be retrived in the app you registered in Azure Active Directory"      
+            }      
+        },
+        "authentication-id_secretValue": {      
+            "type": "securestring",      
+            "metadata": {      
+              "description": "Specifies the value of the authentication-id secret that you want to create. authentication-id, or Secret ID or Client Secret,  can be retrived in the app you registered in Azure Active Directory"      
+            }      
+        },
+        "objectOwnerObjectId": {
+            "type": "string",      
+            "metadata": {      
+              "description": "Specifies the object ID of the user who deploy this template"
+      
+            }
+        }
+    },
+    "variables": {
+        "tenanId": "[subscription().tenantId]",
+        "subscriptionId": "[subscription().subscriptionId]",
+        "resourceGroupName": "[resourceGroup().name]",
+        "managedResourceGroupId": "[concat(subscription().id, '/resourceGroups/', variables('managedResourceGroupName'))]",
+        "managedResourceGroupName": "[concat('databricks-rg-', parameters('databricksWorkspaceName'), '-', uniqueString(parameters('databricksWorkspaceName'), resourceGroup().id))]",
+        "sqlServerName": "[concat(parameters('SQLserverName'),'-', uniqueString(subscription().id, resourceGroup().id))]",
+        "databaseName": "sample-db",
+        "databaseEdition": "Basic",
+        "databaseCollation": "SQL_Latin1_General_CP1_CI_AS",
+        "databaseServiceObjectiveName": "Basic",
+        "uniqueStorage": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), parameters('location'))]",
+        "storageName": "[tolower(concat('sqlva', variables('uniqueStorage')))]",
+        "allowAzureIps": true,
+        "enableATP": false,
+        "supportsHttpsTrafficOnly": true,
+        "isHnsEnabled": true,
+        "storagekind": "StorageV2",
+        "accountType": "Standard_LRS",
+        "accessTier": "Hot",
+        "apiVersion" : "2018-06-01"
+
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "[variables('accountType')]"
+            },
+            "kind": "[variables('storagekind')]",
+            "name": "[parameters('storageAccountName')]",
+            "apiVersion": "2018-07-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "accessTier": "[variables('accessTier')]",
+                "supportsHttpsTrafficOnly": "[variables('supportsHttpsTrafficOnly')]",
+                "isHnsEnabled": "[variables('isHnsEnabled')]"
+            }      
+        },
+        {
+            "type": "Microsoft.Databricks/workspaces",
+            "sku": {
+                "name": "[parameters('databricksTier')]"
+            },
+            "name": "[parameters('databricksWorkspaceName')]",
+            "apiVersion": "2018-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ManagedResourceGroupId": "[variables('managedResourceGroupId')]"
+            }
+        },
+        {
+            "type": "Microsoft.DataFactory/factories",
+            "name": "[parameters('datafactoryName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[parameters('datafactoryLocation')]",
+            "identity": {
+                "type": "SystemAssigned"
+            }
+        },
+        {
+        "type": "Microsoft.Sql/servers",
+            "name": "[parameters('SQLserverName')]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",            
+            "properties": {
+                "administratorLogin": "[parameters('SQLadministratorLogin')]",
+                "administratorLoginPassword": "[parameters('SQLadministratorLoginPassword')]",
+                "version": "12.0"
+            },
+            "resources": [
+                {
+                    "type": "databases",
+                    "sku": {
+                        "name": "[variables('databaseServiceObjectiveName')]",
+                        "tier": "[variables('databaseEdition')]"
+                    },
+                    "name": "[parameters('SQLdatabaseName')]",
+                    "apiVersion": "2017-10-01-preview",
+                    "location": "[parameters('location')]",        
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('SQLserverName'))]"
+                    ]
+                },
+                {
+                    "type": "firewallrules",
+                    "name": "AllowAllWindowsAzureIps",
+                    "apiVersion": "2014-04-01-preview",
+                    "location": "[parameters('location')]",
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('SQLserverName'))]"
+                    ],
+                    "condition": "[variables('allowAzureIps')]"
+                },
+                {
+                    "type": "securityAlertPolicies",
+                    "name": "Default",
+                    "apiVersion": "2017-03-01-preview",
+                    "properties": {
+                        "state": "Enabled",
+                        "disabledAlerts": [],
+                        "emailAddresses": [],
+                        "emailAccountAdmins": true
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('SQLserverName'))]",
+                        "[concat('Microsoft.Sql/servers/', parameters('SQLserverName'), '/databases/', parameters('SQLdatabaseName'))]"
+                    ],
+                    "condition": "[variables('enableATP')]"
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2016-10-01",
+            "name": "[parameters('vaults_Trust_name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "standard"
+                },
+                "tenantId": "[variables('tenanId')]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[variables('tenanId')]",
+                        "objectId": "[parameters('objectOwnerObjectId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "Decrypt",
+                                "Encrypt",
+                                "UnwrapKey",
+                                "WrapKey",
+                                "Verify",
+                                "Sign"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }          
+                ],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_Trust_name'), '/application-id')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_Trust_name'))]"
+            ],
+            "properties": {
+                "value": "[parameters('application-id_secretValue')]",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_Trust_name'), '/authentication-id')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_Trust_name'))]"
+            ],
+            "properties": {
+                "value": "[parameters('authentication-id_secretValue')]",
+                "contentType": "Secret ID",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_Trust_name'), '/SQLPassword')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_Trust_name'))]"
+            ],
+            "properties": {
+                "value": "[parameters('SQLadministratorLoginPassword')]",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_Trust_name'), '/SQLUsername')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_Trust_name'))]"
+            ],
+            "properties": {
+                "value": "[parameters('SQLadministratorLogin')]",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_Trust_name'), '/tenant-id')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_Trust_name'))]"
+            ],
+            "properties": {
+                "value": "[variables('tenanId')]",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        }
+    ]
+}

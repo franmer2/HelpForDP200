@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "value": "Dream-Factory"
+        },
+        "AzureDataLakeStorageParam_properties_typeProperties_fileName": {
+            "value": "@concat('pageviews-',dataset().YearDS,dataset().MonthDS,dataset().DayDS,if(less(int(dataset().HourDS),10),'-0','-'),dataset().HourDS,'0000.gz')"
+        },
+        "AzureDataLakeStorageParam_properties_typeProperties_folderPath": {
+            "value": "wikipedia/demo_datasets"
+        },
+        "AzureDataLakeStorageFolder_properties_typeProperties_folderPath": {
+            "value": "wikipedia/demo_datasets"
+        },
+        "FranmerTrigger_properties_pipeline1_parameters_Year": {
+            "value": "@formatDateTime(utcnow(),'yyyy')"
+        },
+        "FranmerTrigger_properties_pipeline1_parameters_Month": {
+            "value": "@formatDateTime(utcnow(),'MM')"
+        },
+        "FranmerTrigger_properties_pipeline1_parameters_Day": {
+            "value": "@adddays(utcnow(),-1,'dd')"
+        },
+        "FranmerTrigger_properties_pipeline1_parameters_Hours": {
+            "value": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+            ]
+        },
+        "Wikipedia_LS_properties_typeProperties_url": {
+            "value": "https://dumps.wikimedia.org/other/pageviews/"
+        },
+        "AzureKeyVault_Name": {            
+            "value": "<Your Key Vault Name>"
+        },
+
+        "AzureDataLakeStorageGen2_Name": {            
+            "value": "<Your Azure storage account Name>"
+        }
+    }
+}
