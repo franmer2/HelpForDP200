@@ -907,11 +907,33 @@ If I click on the error indicator, I can see clearly when and where the error oc
 
 Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept and Azure Analysis Services. I will also talk quickly about Azure Data Factory creation with Powershell and some other stuffs helpful for the exam. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
 
-
-
-
-
 ![sparkles](pictures/image308.jpg)
+
+## Polybase ##
+
+Azure SQL database has a cool concept called "Polybase". Polybase allows to create external table that just hold the schema but the data stay in it's original storage. In our case, we will create an Azure Data Warehouse service, and create external table only with the wikipedia data schema and point to our datalake (to the result zone).
+
+### Create Azure SQL Data Warehouse ###
+
+###   Configure Polybase  ### 
+
+Below the sequence in order to configure Polybase ![sparkles](pictures/WhiteRabbit.jpg) 
+
+- Enable Polybase
+- Create a Master Key
+- Create a Database Scope (also called credential)
+- Create an external data source
+- Optional: Create statisitics
+- Create External File Format
+- Create External Table
+
+
+
+
+
+
+
+
 
 
 
