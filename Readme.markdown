@@ -156,7 +156,7 @@ In this section of the article, we will create the security elements that allow 
 
 In our Azure Active Directory, we will create and register an application.
 
-From the Azure portal, click on "**Azure Active Directory**" and then on "**App registration (preview)**".
+From the Azure portal, click on "**Azure Active Directory**" and then on "**App registration**".
 
 ![sparkles](pictures/image026.jpg)
 
@@ -282,7 +282,8 @@ If all goes well, you must have the following message. Click on the "**OK**" but
 
 ## Import Databricks's notebook
 
-For the continuation of the article, we will download the notebook which is at the following address: https://1drv.ms/u/s!Am-C-ktMH9lgg9MCqqG5dS8XKFKxDA or https://github.com/franmer2/demowikipedia/tree/master/resources
+For the continuation of the article, we will download the notebook (DatabricksNotebook_Wikipedia_ADLSGen2_Generic.dbc) which is at the following address: https://1drv.ms/u/s!Am-C-ktMH9lgg9MCqqG5dS8XKFKxDA or https://github.com/franmer2/HelpForDP200/tree/master/resources
+
 
 
 **You will then have to modify the notebook to add your information concerning the application ID, the "data lake" as well as your SQL Database.**
@@ -336,7 +337,7 @@ We will now develop our data lake to create an area for raw data from Wikipedia,
 
 ![sparkles](pictures/image057.png)
 
-The zone "demo_datasets" will be created manually. The "wikipedia_results" zone will be created automatically by Azure Databricks. In order to interact with Azure Data Lake Gen2, it is necessary to use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/). From Azure Storage Explorer, sign in to your Azure account.Find your lake of data, do a right click on it, then create a container "**wikipedia**"
+The zone "demo_datasets" will be created manually. The "wikipedia_results" zone will be created automatically by Azure Databricks. In order to interact with Azure Data Lake Gen2, yo can use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/). From Azure Storage Explorer, sign in to your Azure account. Find your lake of data, do a right click on it, then create a container "**wikipedia**"
 
 ![sparkles](pictures/image058.jpg)
 
@@ -506,9 +507,11 @@ Click in the field "**Relative URL**" then on "**Add dynamic content**"
 
 ![sparkles](pictures/image084.jpg)
 
-Copy the string below into the "**Add Dynamic Content**" field and click on "**Finish**":
+Copy the string below into the "**Add Dynamic Content**" field and click on "**Finish**" (you may have an error after the copy/paste, in this case, double check the quotes (')):
 
-    @concat(dataset().YearDS,'/',dataset().YearDS,'-',dataset().MonthDS,'/pageviews-',dataset().YearDS,dataset().MonthDS,dataset().DayDS,if(less(int(dataset().HourDS),10),'-0','-'),dataset().HourDS,'0000.gz')
+`  @concat(dataset().YearDS,'/',dataset().YearDS,'-',dataset().MonthDS,'/pageviews-',dataset().YearDS,dataset().MonthDS,dataset().DayDS,if(less(int(dataset().HourDS),10),'-0','-'),dataset().HourDS,'0000.gz')`
+
+  
 
 ![sparkles](pictures/image085.jpg)
 
@@ -571,7 +574,11 @@ We will repeat the following procedure to create a dataset on the same data lake
 
 Then in the "**Connection**" tab, define the path as shown below by adding the following expression in the "**File**" field:
 
+`
 @concat('pageviews-',dataset().YearDS,dataset().MonthDS,dataset().DayDS,if(less(int(dataset().HourDS),10),'-0','-'),dataset().HourDS,'0000.gz')
+`
+
+
 
 ![sparkles](pictures/image093.jpg)
 
@@ -608,7 +615,7 @@ In the example, I added some default values for the example (especially in the A
 
 ### Creation of the "Delete" activity
 
-As this activity does not exist yet in the list of available activities, we will create it by code.
+As this activity does not exist yet in the list of available activities, we will create it by code. (Edit : this )
 
 Click on the "**Code**" button to display the code editor
 
@@ -674,7 +681,11 @@ Click on the "**If Condition**" activity. In "**settings**" tab, clic on "**Add 
 
 Add the following content:
 
-    @activity('Get Metadata1').output.Exists
+ `
+ @activity('Get Metadata1').output.Exists
+ `   
+
+
 
 ![sparkles](pictures/image103.jpg)
 
@@ -841,342 +852,71 @@ From now on, you have all the tools to create a nice report on the result of the
 
 ![sparkles](pictures/image135.jpg)
 
-## Deploying the solution in another environment
+A good thing is to be able to have the report updated automatically and have a daily refresh to get Wikipedia data.
+We can achieve that with 2 steps
+•	Schedule daily Azure Data Factory pipeline execution
+•	Automatic Power BI dataset daily refresh
 
-We will now see how to deploy our analytical solution automatically through the use of ARM models.
-This preparation and deployment will be done following the steps below:
-- Creating an Azure Resource Management (ARM) template
-- Deploying Azure resources through the ARM model
-- Manual actions to add configurations not yet supported by ARM models
-- Creating an ARM Model to Deploy the Azure Data Factory Pipeline in the New Environment
-- Deployment of the pipeline via the ARM model
 
-At first I planned to do this exercise with the "Template" service of the Azure portal, but by talking with [David Chapdelaine](https://www.linkedin.com/in/dchapdelaine/), TSP Azure, he also recommended me to watch the Azure CLI track, which I also did 😊 . Therefore, I will illustrate these 2 approaches in the rest of this article. ARM models are available here: https://github.com/franmer2/demowikipedia
+## Schedule daily Azure Data Factory pipeline execution ##
 
+Go back to Azure Data Factory and jump in your pipeline.
+Click on "**Add trigger**" and "**New/Edit**"
 
-## Using the "Template" service of the Azure portal
+![sparkles](pictures/image300.jpg)
 
-### Creating an Azure Resource Management (ARM) Template
+A new pane appears on the right. Click on the little arrow to open the drop-down list and click on "**+New**"
 
-There are still no miracle solutions for creating a functional ARM model from the resource group. However, the Azure portal provides templates to facilitate full ARM model creation to replay the deployment of our solution. Coupled with Visual Studio Code, we have 2 tools to make our life easier when creating ARM models.
+![sparkles](pictures/image301.jpg)
 
-If from your resource group you click on "Deployments" you will be able to see the different deployments made within your resource group. By clicking on each of them, you will be able to be inspired to write your model ARM.
+Define the trigger parameters to fire one time a day like shown in the screenshot below. Then click on "**Next**" button:
 
-![sparkles](pictures/image136.jpg)
+![sparkles](pictures/image302.jpg)
 
-Another source of inspiration may be the "**Export Template**" function also available from your resource group. But as indicated by the warning message, not all resources are yet exportable via this function.
+In the Edit Trigger pane, enter parameters like showns below and click "**Finish**"
 
-![sparkles](pictures/image137.jpg)
 
-To write the ARM model, [Visual Studio Code](https://code.visualstudio.com/) can be an excellent friend especially if we add modules to help write the ARM models. Then just open an empty JSON file and start writing the ARM template.
+|Parameter|Value|
+|:--------|:----|
+|Year|`@formatDateTime(utcnow(),'yyyy')`|
+|Month|`@formatDateTime(utcnow(),'MM')`|
+|Day|`@adddays(utcnow(),-1,'dd')`|
+|Hours|`[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]`|
 
-![sparkles](pictures/image138.jpg)
 
-ARM template samples for this example are available here: https://github.com/franmer2/demowikipedia
+![sparkles](pictures/image303.jpg)
 
-### Deploying Azure Resources Using the ARM Model
+Now, your trigger is created and can be monitored in the Azure Data Factory "**Monitor**" section
 
-Once the ARM model is written, we will deploy it via the Azure portal (but it can be done by other methods, with PowerShell for example).
+![sparkles](pictures/image304.jpg)
 
-For this article, I deploy my ARM model in the same tenant and the same "Service Principal" that we created at the beginning of the article will be used, but it is possible to do a deployment in another tenant, but it will create a new "Service Principal".
+If you need more Analytics capability, you can also use the preview feature "**Azure Data Factory Analytics (Preview when I'm writting this article (July 29,2019))**"
 
-From the Azure portal, click the "**All services**" button on the left. Then in the search field, enter "**Templates**" then click on "**Templates**"
+![sparkles](pictures/image305.jpg)
 
-![sparkles](pictures/image139.jpg)
+Here a sample of monitoring my pipeline with "**Log Analytics**"
 
-Click on the "**Add**" button, then "**General**" then give a name and a description to your model. Click on the "**Ok**" button
+![sparkles](pictures/image306.jpg)
 
+If I click on the error indicator, I can see clearly when and where the error occurs
 
-![sparkles](pictures/image140.jpg)
+![sparkles](pictures/image307.jpg)
 
-Click on "**ARM Template**". Delete the content already present in the template and copy / paste from the Visual Studio code into the ARM template edit window. Click on the "**Ok**" button.
+Tricks and tips for DP200
 
 
-![sparkles](pictures/image141.jpg)
+Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept and Azure Analysis Services. I will also talk quickly about Azure Data Factory creation with Powershell and some another stuffs helpul for the exam. Pay attention to the sentences with the white rabbit 
 
-Click on the "**Add**" button
+![sparkles](pictures/whiterabbit.jpg)
 
 
-![sparkles](pictures/image142.jpg)
 
+![sparkles](pictures/image308.jpg)
 
-We will now use this model to deploy our solution.Click on your model then on the button "**Deploy**"
 
-![sparkles](pictures/image143.jpg)
 
-Fill out the deployment form.
 
-======================================================
 
-As a reminder, the "**objectID**" and other information can be found from the Azure portal:
-
-Click on the "**Azure Active Directory**" icon, then "**App registrations (preview)**".Search for your application:
-
-![sparkles](pictures/image144.jpg)
-
-Information are available in "**Overview**"
-
-![sparkles](pictures/image145.jpg)
-
-======================================================
-
-In the last line of the form, to find your **objectID**, you can use the "**Cloud Shell**", then use the command: 
-
-    az ad signed-in-user show --query "objectId"
-
-Then accept the terms and click on the "**Purchase**" button.
-
-![sparkles](pictures/image146.jpg)
-
-
-After only a few minutes, you will get a new resource group with all the necessary services for your data analytics solution
-
-
-![sparkles](pictures/image147.png)
-
-## Using the Cloud Shell and Azure CLI
-
-Another way to deploy ARM models is to use Azure CLI. Below is an example of deployment with the following script
-
-    resourceGroup='<Your Resource Group Name>'
-    location='canadacentral'
-    az group create -n $resourceGroup -l $location
- 
-    deploymentName='<Your Deployment Name>'
-    az group deployment create -g $resourceGroup -n $deploymentName \
-    --template-uri 'https://raw.githubusercontent.com/franmer2/demowikipedia/master/resources/1_Wikipedia_General_ARM_template.json' \
-    --parameters location=$location \
-    databricksWorkspaceName='<Your Azure Databricks Workspace Name>' \
-    databricksTier='premium' \
-    storageAccountName='<Your Storage Account Name>' \
-    datafactoryName='<Your Azure Datafactory Name>' \
-    datafactoryLocation='Canada Central' \
-    SQLadministratorLogin='<Your SQL Administrator Name>' \
-    SQLadministratorLoginPassword='<Your SQL Administrator Password>' \
-    SQLserverName='<Your SQL Server Name>' \
-    SQLdatabaseName='<Your SQL Database Name>' \
-    vaults_Trust_name='<Your Azure Key Vault Name>' \
-    objectId='<Your Application Object ID>' \
-    application-id_secretValue='<Your Application (client) ID>' \
-    authentication-id_secretValue='<Your Application (client) Secret>' \
-    objectOwnerObjectId=$(az ad signed-in-user show --query 'objectId' | xargs)
-
-To illustrate the script above, here is a screenshot with an example of used values:
-
-![sparkles](pictures/image148.jpg)
-
-
-## Manual actions to add configurations not yet supported by ARM models
-
-However, some actions will have to be done manually, which are not yet supported in an ARM deployment.
-
-1. Databricks: generate the access token and define the scope
-2. Databricks: add and modify the notebook
-3. Azure Key Vault: add the Azure Data Factory account service in Access Policies
-4. Azure Key Vault: add the secret for Azure Databricks with the previously created token
-5. Storage account: add the main service to your storage account
-6. Storage account: create the "wikipedia" container in the storage account
-
-### Azure Databricks Service Configuration
-#### Databricks: Generate the access token and define the scope
-
-At the time of writing this article (April 2019), it is not possible to create an Azure Databricks token automatically.
-
-A vote has been opened on this subject:
-https://feedback.azure.com/forums/909463-azure-databricks/suggestions/35257819-expose-api-key-during-arm-deployment
-
-We will manually add an access token to the new Azure Databricks workspace. I'm not going to redo the entire procedure, since I've seen it earlier in this article. Below are just a few screenshots of the main steps:
-
-![sparkles](pictures/image149.jpg)
-
-Then click on "**Generate New Token**". Remember to copy the new token.
-
-![sparkles](pictures/image150.jpg)
-
-We will now create a new "**scope**" following the same steps as in the beginning of the article.
-
-Modify the url of your Azure Databricks workspace by adding:
-"#secrets/createScope".
-
- For the example, here is what my URL looks like for my new workspace:
- https://canadacentral.azuredatabricks.net#secrets/createScope
- 
- The following window may appear. Then choose the new workspace:
-
- ![sparkles](pictures/image151.jpg)
-
- Create your new scope. Name it "**Trust**" if you do not want to change the notebook.
-
- ![sparkles](pictures/image152.png)
-
- Azure Key Vault information can be retrieved from the Azure portal as shown below
-
- ![sparkles](pictures/image153.jpg)
-
- ### Databricks: adding the notebook
- 
- Download the notebook from this link https://1drv.ms/u/s!Am-C-ktMH9lgg9MCqqG5dS8XKFKxDA or from github: https://github.com/franmer2/demowikipedia
- 
- Create a folder in your workspace and import the notebook
-
-![sparkles](pictures/image154.jpg)
-
-Then modify the notebook with the information of the new environment, wherever it is mentioned, as shown below
-
-![sparkles](pictures/image190.png)
-
-![sparkles](pictures/image155.jpg)
-
-
-### Configuring Azure Key Vault
-#### Adding the Data Factory account in Access policies
-
-Now add the main service of Azure Data Factory. Click "**Select Principal**," and then search for the name of your Azure Data Factory service. Select the main service. Click on the "**Ok**" button.
-
-Then set the permissions for the secret. The "**Get**" permission will be sufficient in our case. Click on the "**Ok**" button.
-
-![sparkles](pictures/image156.jpg)
-
-Click on the "**Save**" button
-
-![sparkles](pictures/image157.jpg)
-
-### Adding the Databricks token
-
-We will add the previously created Azure Databricks token in our newly deployed Azure Key Vault. From the Azure portal, in your "**Azure Key Vault**" service, click "**Secret**", "**Generate / Import**", then add the "**Databricks**" secret with the token created in the Azure Databricks workspace
-
-![sparkles](pictures/image158.jpg)
-
-### Adding the Service Principal at the storage account level
-
-In your storage account, add your "Service Principal" account with the role "**Storage Blob Data Contributor**"
-
-![sparkles](pictures/image159.jpg)
-
-For the moment (April 2019), it is not possible to create a container in a Data Lake Gen2 type account with the ARM models. It is therefore necessary to do it manually. It can be done for example via "**Azure Storage Explorer**" or the **Azure portal**. Below is an illustration with the Azure portal.
-
-![sparkles](pictures/image160.jpg)
-
-## Creating an ARM Model to Deploy the Azure Data Factory Pipeline in the New Environment
-
-### Export the ARM model of your pipeline
-
-From your original environment, return to your Azure Data Factory with your transformation pipeline. In the top menu bar, click on "**ARM Template**" and then on "**Export ARM Template**".
-
-![sparkles](pictures/image161.jpg)
-
-Then save the package in an easily accessible place
-
-
-![sparkles](pictures/image162.png)
-
-### Modify your ARM model
-
-With Visual Studio Code, modify your ARM model to facilitate deployment in a new environment. Notably by creating the url of your storage account and Azure Key Vault from parameters and variables:
-
-
-    "AzureKeyVault_Trust_properties_typeProperties_baseUrl": "[concat('https://',parameters('AzureKeyVault_Name'),'.vault.azure.net/')]",
-            "AzureDataLakeStorageGen2_properties_typeProperties_url": "[concat('https://',parameters('AzureDataLakeStorageGen2_Name') ,'.dfs.core.windows.net')]"
-
-
-The ARM model that I use is available here: https://github.com/franmer2/demowikipedia/blob/master/resources/2_Wikipedia_ADF_ARM_template.json
-
-
-
-## Deploy the ARM pipeline creation model
-### From the Azure portal with Template service
- 
-In the same way as for the first ARM model, save your model on the Azure portal in the "**Template**" section
-
-![sparkles](pictures/image163.jpg)
-
-Then deploy it from the portal in your new environment
-
-![sparkles](pictures/image164.jpg)
-
-Fill out the deployment form. "**Factory Name**" is the name of the Azure Data Factory service that you just deployed through the ARM model. Accept the terms and click on the "**Purchase**" button:
-
-![sparkles](pictures/image165.png)
-
-### With Bash and AzureCLI
-
-Use the script below in the Azure Cloud Shell
-
-
-
-    resourceGroup='<YOUR RESOURCE GROUP>'
-    location='<YOUR LOCATION>'
-    ADFdeploymentName='<YOUR DEPLOYMENT NAME>'
-
-    az group deployment create -g $resourceGroup -n $ADFdeploymentName \
-    --template-uri 'https://raw.githubusercontent.com/franmer2/demowikipedia/master/resources/2_Wikipedia_ADF_ARM_template.json' \
-    --parameters 'https://raw.githubusercontent.com/franmer2/demowikipedia/master/resources/2_Wikipedia_ADF_ARM_template.parameters.json' \
-    --parameters AzureDataLakeStorageGen2_properties_typeProperties_servicePrincipalId='<Your Service Principal ID>' \
-    factoryName='<YOUR AZURE DATA FACTORY NAME>' \
-    AzureKeyVault_Name='<YOUR AZURE KEY VAULT NAME>' \
-    AzureDataLakeStorageGen2_Name='<YOUR AZURE STORAGE NAME>'
-
-Below an example with a screenshot
-
-![sparkles](pictures/image166.jpg)
-
-### Deployment result
-
-After a few seconds, your pipeline is deployed in your new environment
-
-![sparkles](pictures/image167.jpg)
-
-### Manual action after pipeline deployment
-
-After deploying the pipeline, click on the "**Notebook**" activity to redefine the path of your notebook in your Azure Databricks workspace.
-
-![sparkles](pictures/image168.jpg)
-
-Then click on the "**Publish All**" button.
-
-Test the pipeline by clicking "**validate**" and enter your parameters. Normally, everything should be fine. In case your get an error with 
-
-![sparkles](pictures/image169.jpg)
-
-In the case your get an error with the Notebook activity, double check if you have enought quota in your Azure subscription. You can also modify the Databricks connection in Azure Data Factory to size down the cluster. (For a reason I can't explain, sometime i have to click on "Access token"and click back to "Azure Key vault" to have values in the drop down lists)
-
-![sparkles](pictures/image191.png)
-
-## Verification in the SQL Database
-
-Log in to your SQL Database located in the new environment. Click on "**Query editor**", then query your database to check the presence of the data in your table after running the Azure Data Factory pipeline:
-
-![sparkles](pictures/image170.jpg)
-
-## Editing the Power BI Report
-
-If you use the Power BI file available on the [GitHub](https://github.com/franmer2/demowikipedia) (resources folder), you need to modify the connection string to retrieve the data directly from your SQL Database.Click on "**Edit Queries**" and then on "**Data Source Settings**":
-
-![sparkles](pictures/image171.jpg)
-
-Then click on the "**Change Source"** button to indicate the connection information of your SQL Database:
-
-![sparkles](pictures/image172.jpg)
-
-Then refresh the report data
-
-![sparkles](pictures/image173.jpg)
-
-## By the way, what is the relationship with the title of the article??!!
-
-
-This is certainly the question you need to ask yourself at this point in the article (or not 😊)!
-
-I remember that, from the first days I did this demo, the article about Darth Vader was very often in the top 50 most consulted articles. Having now the history of viewing articles, one can see the evolution of the consultation of this article day after day. Which is nicer, but it does not answer the question of the title of this article 😊
-
-
-
-![sparkles](pictures/image174.jpg)
-
-## Sources
-https://www.tamr.com/from-devops-to-dataops-by-andy-palmer/
-
-Thank you
 
 
 #
