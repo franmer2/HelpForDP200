@@ -927,6 +927,8 @@ Below the sequence in order to configure Polybase ![sparkles](pictures/WhiteRabb
 - Create External File Format
 - Create External Table
 
+Query the table
+
 
 
 
