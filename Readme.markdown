@@ -905,8 +905,7 @@ If I click on the error indicator, I can see clearly when and where the error oc
 Tricks and tips for DP200
 
 
-Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept and Azure Analysis Services. I will also talk quickly about Azure Data Factory creation with Powershell and some another stuffs helpul for the exam. Pay attention to the sentences with the white rabbit 
-
+Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept and Azure Analysis Services. I will also talk quickly about Azure Data Factory creation with Powershell and some another stuffs helpul for the exam. Pay attention to the sentences with the white rabbit
 ![sparkles](pictures/WhiteRabbit.jpg)
 
 
