@@ -1,35 +1,3 @@
-# Why Darth Vader still finishes in the top 50 most consulted Wikipedia articles?
-
-
-
-## Introduction
-
-In this article, we'll see how to deploy a complete data analytics solution in Azure. We will initially build the solution with several Azure services. Then we will set up a transformation pipeline, with parametrized processes, to automate data movements and transformations. Finally, we will see how to deploy our solution in another environment. (French version available [here](https://franmerms.wordpress.com/2019/04/18/pourquoi-darth-vader-termine-toujours-dans-le-top-50-des-articles-wikipedia-les-plus-consultes/))
-
-I will go through the topic of DataOps quickly, and present how the Azure services of our data platform can help implement some of the principles of DataOps.
-
-One of the goals of DataOps is to have a quality value production pipeline, while still being able to inject modifications and continuous innovation without interrupting this pipeline.
-In each of the environments (development, tests, ...), you have to be able to test your ideas to implement innovation, create several test branches, and merge them to get them to production as quickly as possible. The illustration below proposes, for a given environment, a sequence of the different stages of production of value while allowing the infusion of ideas and innovations without interrupting this sequence.
-
-![sparkles](pictures/image001.png)
-
-These sequences must be able to be performed in a development environment, but also in other environments such as testing or production. It is therefore necessary to be able to move as easily as possible from one environment to another.
-
-As a result, 7 major steps towards DataOps have been observed:
-
-- Perform tests
-- Use a version control system
-- Make branches and merge
-- Use multiple environments
-- Reuse and containerize
-- Set up treatments
-- Have simple storage
-
-To illustrate some of the principles of DataOps, I decided to recycle an old demo. Because it is a demonstration that I use very regularly with always the same impact, and also because with the age I became lazy ... and that I wanted to automate as much as possible this demonstration ... and, by the way, I significantly reduced the risk of error due to this automation (which for the moment, is a principle of DevOps).
-
-This is my [Wikipedia logs analysis](https://franmerms.wordpress.com/2014/12/04/big-data-analyses-des-logs-wikipdia-avec-hdinsight/) demonstration
-
-
 To build our solution, we will use several services of our data platform
 
 ![sparkles](pictures/image002.png)
