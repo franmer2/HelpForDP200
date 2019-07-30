@@ -860,7 +860,10 @@ We can achieve that with 2 steps
 
 ## Schedule daily Azure Data Factory pipeline execution ##
 
-Go back to Azure Data Factory and jump in your pipeline.
+Now it could be nice to have our pipeline runs every day to feed our database and get up to date report. Azure Data Factory has the capability to define triggers to be executed according rules and time you can defined.
+
+
+Go back to Azure Data Factory and jump into your pipeline.
 Click on "**Add trigger**" and "**New/Edit**"
 
 ![sparkles](pictures/image300.jpg)
@@ -1079,6 +1082,11 @@ Select * from [Wikipedia_external]
 To complete your skills with polybase, I highly recommand to read this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-load-from-azure-data-lake-store) ![sparkles](pictures/WhiteRabbit.jpg) 
 
 
+## Azure Data Warehouse Monitoring ##
+
+It could be a good idea to monitor your Azure SQL Data Warehouse, especially the cache usage
+
+This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache) I highly recommend to read ![sparkles](pictures/WhiteRabbit.jpg). Especially the cache hit and used percentage section ![sparkles](pictures/WhiteRabbit.jpg)
 
 #
 [Franck Mercier](https://www.linkedin.com/in/mercierfranck/)
