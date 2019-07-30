@@ -915,6 +915,19 @@ Azure SQL database has a cool concept called "Polybase". Polybase allows to crea
 
 ### Create Azure SQL Data Warehouse ###
 
+From Azure portal, click on the plus sign, "**Databases**" then "**SQL Data Warehouse**"
+
+![sparkles](pictures/image309.jpg)
+
+Fill the form to create the data warehouse. Choose the SQL server you created previously and select the performance level to the minimum, it will be enough for our test.
+Click on "**Review + create**" button. 
+
+![sparkles](pictures/image310.jpg)
+
+A new window appears, your deployment is underway... It should takes few minutes
+
+![sparkles](pictures/image311.jpg)
+
 ###   Configure Polybase  ### 
 
 Below the sequence in order to configure Polybase ![sparkles](pictures/WhiteRabbit.jpg) 
