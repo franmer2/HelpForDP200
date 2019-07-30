@@ -929,18 +929,70 @@ It should takes few minutes. When done, click on "**Go to resource**" button.
 ![sparkles](pictures/image311.jpg)
 
 ###   Configure Polybase  ### 
+Now, we will configure Polybase to access the data stored in the data lake
+
+You can connect to your Datawarehouse with several tools like
+
+- SQL Server management Studio (SSMS)
+- Visual Studio
+- Azure Data Studio
+
+In our case, we will use SSMS. Below the connection windows. (in the case you can't connect to your server, check the [Azure SQL server firewall settings](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/load-data-wideworldimportersdw#create-a-server-level-firewall-rule)).
+
+In the server name field, enter the name of SQL server on which you deployed your data warehouse. in our case, the server is called "fallinlove2nite.database.windows.net". For authentication, use the one you created during the server creation step above.
+
+![sparkles](pictures/image312.jpg)
+
+
+===================================================================
+
+You can get the server name from the portal, in the SQL data warehouse resource "**Overview**" screen 
+
+![sparkles](pictures/image313.jpg)
+
+===================================================================
 
 Below the sequence in order to configure Polybase ![sparkles](pictures/WhiteRabbit.jpg) 
 
-- Enable Polybase
+- **Optional:** Create a user for loading data
 - Create a Master Key
-- Create a Database Scope (also called credential)
-- Create an external data sourcel
-- Optional: Create statisitics
+- Create a database scope credential
+- Create an external data source- 
 - Create External File Format
-- Create External Table
+- Create schema for external table
+- Create external table
+- **Optional:** Create statisitics
+- All the steps above is well detailed in this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/load-data-wideworldimportersdw) ![sparkles](pictures/WhiteRabbit.jpg) 
 
-Query the table
+### Create a master key ###
+
+`CREATE MASTER KEY;`
+
+### Create a database scope credential ###
+
+We will create a database scope credential by using the service principal we created at the begin of this article (FranmerTheVaultGen2)
+
+
+
+
+`CREATE DATABASE SCOPED CREDENTIAL ADLSCredential
+WITH
+    IDENTITY = '<client_id>@<OAuth_2.0_Token_EndPoint>',
+    SECRET = '<key>'
+;`
+
+![sparkles](pictures/image315.jpg)
+
+
+======================================
+
+You can retrieve your client id and endpoint from Azure portal
+
+
+![sparkles](pictures/image314.jpg)
+
+======================================
+
 
 
 
