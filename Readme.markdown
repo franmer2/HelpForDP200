@@ -1041,7 +1041,7 @@ WITH
 
 ![sparkles](pictures/image317.jpg)
 
-### Create the external tables ###
+### Create the external table ###
 
 Now we will create the external table to query our data stored in the data lake. In our case this is the T-SQL script:
 
@@ -1068,6 +1068,15 @@ WITH
 ![sparkles](pictures/image318.jpg)
 
 
+Now you can query your external table. below a very simple query to get the result directly from our data lake
+
+`
+Select * from [Wikipedia_external]
+`
+
+![sparkles](pictures/image319.jpg)
+
+To complete your skills with polybase, I highly recommand to read this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-load-from-azure-data-lake-store) ![sparkles](pictures/WhiteRabbit.jpg) 
 
 
 
