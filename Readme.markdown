@@ -924,7 +924,7 @@ Click on "**Review + create**" button.
 
 ![sparkles](pictures/image310.jpg)
 
-A new window appears, your deployment is underway... It should takes few minutes
+It should takes few minutes. When done, click on "**Go to resource**" button.
 
 ![sparkles](pictures/image311.jpg)
 
@@ -935,7 +935,7 @@ Below the sequence in order to configure Polybase ![sparkles](pictures/WhiteRabb
 - Enable Polybase
 - Create a Master Key
 - Create a Database Scope (also called credential)
-- Create an external data source
+- Create an external data sourcel
 - Optional: Create statisitics
 - Create External File Format
 - Create External Table
