@@ -1,3 +1,9 @@
+This long article will help you to prepare for passing DP 200 exam.
+The first part of the article is about all the steps to build an analytic solution from scratch. At the end of this part, you will also get a cool demo to showcase to your customers.
+The second part of this article is about some tips and tricks I think it could help to pass the exam. I highly recommend to “follow the white rabbit” ![sparkles](pictures/WhiteRabbit.jpg)
+
+# Build an Analytic solution in Azure
+
 To build our solution, we will use several services of our data platform
 
 ![sparkles](pictures/image002.png)
