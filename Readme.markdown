@@ -1,6 +1,7 @@
 This long article will help you to prepare for passing DP 200 exam.
 The first part of the article is about all the steps to build an analytic solution from scratch. At the end of this part, you will also get a cool demo to showcase to your customers.
-The second part of this article is about some tips and tricks I think it could help to pass the exam. I highly recommend to “follow the white rabbit” ![sparkles](pictures/WhiteRabbit.jpg)
+
+The second part of this article is about some tips and tricks I think it could help to pass the exam. I highly recommend to “follow the white rabbit” ![sparkles](pictures/WhiteRabbit.jpg).
 
 # Build an Analytic solution in Azure
 
@@ -1092,7 +1093,9 @@ To complete your skills with polybase, I highly recommend reading this [article]
 
 It could be a good idea to monitor your Azure SQL Data Warehouse, especially the cache usage
 
-This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache) I highly recommend to read ![sparkles](pictures/WhiteRabbit.jpg). Especially the cache hit and used percentage section ![sparkles](pictures/WhiteRabbit.jpg)
+This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache) I highly recommend to read ![sparkles](pictures/WhiteRabbit.jpg).
+
+Have a special read to the [cache hit and used percentage section](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache#cache-hit-and-used-percentage) ![sparkles](pictures/WhiteRabbit.jpg)
 
 #
 [Franck Mercier](https://www.linkedin.com/in/mercierfranck/)
