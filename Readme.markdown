@@ -1085,7 +1085,7 @@ Select * from [Wikipedia_external]
 
 ![sparkles](pictures/image319.jpg)
 
-To complete your skills with polybase, I highly recommand to read this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-load-from-azure-data-lake-store) ![sparkles](pictures/WhiteRabbit.jpg) 
+To complete your skills with polybase, I highly recommend reading this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-load-from-azure-data-lake-store) ![sparkles](pictures/WhiteRabbit.jpg) 
 
 
 ## Azure Data Warehouse Monitoring ##
