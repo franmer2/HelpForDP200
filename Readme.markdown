@@ -975,34 +975,97 @@ We will create a database scope credential by using the service principal we cre
 
 
 
-`CREATE DATABASE SCOPED CREDENTIAL ADLSCredential
+`
+CREATE DATABASE SCOPED CREDENTIAL ADLSCredential
 WITH
-    IDENTITY = '<client_id>@<OAuth_2.0_Token_EndPoint>',
-    SECRET = '<key>'
-;`
+    IDENTITY = 'user',
+    SECRET = '<azure_storage_account_key>'
+;
+`
 
 ![sparkles](pictures/image315.jpg)
 
 
-======================================
 
-You can retrieve your client id and endpoint from Azure portal
+### Create the external data source ###
 
+Now we need to create an external data source to our Data Lakge Gen2. Below, generic code to connect to ADLS Gen2
 
-![sparkles](pictures/image314.jpg)
-
-======================================
-
-
-
-
-
-
+` 
+CREATE EXTERNAL DATA SOURCE AzureDataLakeStorage
+WITH (
+    TYPE = HADOOP,
+    LOCATION='abfs[s]://<container>@<AzureDataLake account_name>.dfs.core.windows.net', -- Please note the abfss endpoint for when your account has secure transfer enabled
+    CREDENTIAL = ADLSCredential
+);`
 
 
+In our case, T_SQL script look like:
 
 
+`
+CREATE EXTERNAL DATA SOURCE AzureDataLakeStorage
+WITH (
+    TYPE = HADOOP,
+    LOCATION='abfss://wikipedia@thevaultgen2.dfs.core.windows.net', 
+    CREDENTIAL = ADLSCredential
+);
+`
 
+![sparkles](pictures/image316.jpg)
+
+### Create the external data source ###
+
+
+`
+CREATE EXTERNAL FILE FORMAT TextFileFormat
+WITH
+(   FORMAT_TYPE = DELIMITEDTEXT
+,    FORMAT_OPTIONS    (   FIELD_TERMINATOR = '|'
+                    ,    STRING_DELIMITER = ''
+                    ,    DATE_FORMAT         = 'yyyy-MM-dd HH:mm:ss.fff'
+                    ,    USE_TYPE_DEFAULT = FALSE
+                    )
+);
+`
+
+in our case
+
+`
+CREATE EXTERNAL FILE FORMAT TextFileFormat
+WITH
+(   FORMAT_TYPE = DELIMITEDTEXT
+,    FORMAT_OPTIONS    (   FIELD_TERMINATOR = ',')
+);
+`
+
+![sparkles](pictures/image317.jpg)
+
+### Create the external tables ###
+
+Now we will create the external table to query our data stored in the data lake. In our case this is the T-SQL script:
+
+`
+CREATE EXTERNAL TABLE [dbo].[Wikipedia_external] (
+    [Article] [nvarchar](500) NULL,
+    [Language] [nvarchar](10) NULL,
+    [Nb Hit] [int] NULL,
+	[Year] [nvarchar](10) NULL,
+	[Month] [nvarchar](10) NULL,
+	[Day] [nvarchar](10) NULL
+) 
+WITH
+(
+    LOCATION='/wikipedia_results/'
+,   DATA_SOURCE = AzureDataLakeStorage
+,   FILE_FORMAT = TextFileFormat
+,   REJECT_TYPE = Percentage
+,   REJECT_VALUE = 90
+,   REJECT_SAMPLE_VALUE = 200
+);
+`
+
+![sparkles](pictures/image318.jpg)
 
 
 
