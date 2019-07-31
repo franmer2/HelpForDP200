@@ -982,7 +982,7 @@ If not yet created in your SQL Server, create a new master key
 
 ### Create a database scope credential ###
 
-At the date I'm writing this article, Polybase can connect to Data Lake Gen2 on with account storage key.
+At the date I'm writing this article (July 2019), Polybase can connect to Data Lake Gen2 only with account storage key.
 
 You can use whatever you want for **IDENTITY** in the script below:
 
