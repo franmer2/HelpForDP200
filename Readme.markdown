@@ -1124,16 +1124,68 @@ SELECT DATABASEPROPERTYEX('Musicology','Edition') AS Edition
 
 ![sparkles](pictures/image320.jpg)
 
-And maybe you need to modify the serviceobjective via T-SQL, in this case you have to use **SERVICE_OBJECTIVE** argument with the T-SQL script below:  ![sparkles](pictures/WhiteRabbit.jpg)
+And maybe you need to modify the Service Objective via T-SQL, in this case you have to use **SERVICE_OBJECTIVE** argument with the T-SQL script below:  ![sparkles](pictures/WhiteRabbit.jpg)
 
 `
 ALTER DATABASE [Musicology] MODIFY(EDITION = 'standard', MAXSIZE = 100 MB, SERVICE_OBJECTIVE = 'S0');
 `
-(You have to wait few minutes before to see the changes)
 
-Il you run again the first T-SQL script, you can see the new the new edition and ServiceObjective
+(You have to wait few minutes before the changes occur)
+
+If you run again the first T-SQL script, you can see the new edition and Service Objective
 
 ![sparkles](pictures/image321.jpg)
+
+## Protect your SQL data with always encrypted ##
+
+From [this article](https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/always-encrypted-database-engine?view=sql-server-2017
+), there is a good definition of what always encrypted is:
+
+"Always Encrypted is a feature designed to protect sensitive data, such as credit card numbers or national identification numbers (for example, U.S. social security numbers), stored in Azure SQL Database or SQL Server databases. Always Encrypted allows clients to encrypt sensitive data inside client applications and never reveal the encryption keys to the Database Engine ( SQL Database or SQL Server). As a result, Always Encrypted provides a separation between those who own the data (and can view it) and those who manage the data (but should have no access). By ensuring on-premises database administrators, cloud database operators, or other high-privileged, but unauthorized users, cannot access the encrypted data, Always Encrypted enables customers to confidently store sensitive data outside of their direct control."
+
+During the process to encrypt your data you will have to choose between determinic or randomized encryption. ![sparkles](pictures/WhiteRabbit.jpg)
+
+- **Deterministic** encryption always generates the same encrypted value for any given plain text value. Using deterministic encryption allows point lookups, equality joins, grouping and indexing on encrypted columns. However, it may also allow unauthorized users to guess information about encrypted values by examining patterns in the encrypted column, especially if there is a small set of possible encrypted values, such as True/False, or North/South/East/West region. Deterministic encryption must use a column collation with a binary2 sort order for character columns.
+  
+- **Randomized** encryption uses a method that encrypts data in a less predictable manner. Randomized encryption is more secure, but prevents searching, grouping, indexing, and joining on encrypted columns.
+
+From SSMS, right click the WikipediaLogs table and select "**Encrypt Columns...**"
+
+![sparkles](pictures/image322.jpg)
+
+The introduction window appears, click on **Next**
+
+![sparkles](pictures/image323.jpg)
+
+Choose the columns you want to encrypt and the encryption type. Click on the **Next** button
+
+![sparkles](pictures/image324.jpg)
+
+According your security policies, you can store your key either in Windows certificate store or in Azure Key Vault. Click on the **Next** button
+
+![sparkles](pictures/image325.jpg)
+
+On the **Run Settings** window, click on the **Next** button
+
+![sparkles](pictures/image326.jpg)
+
+On the **Summary** window, clik on **Finish** button
+
+![sparkles](pictures/image327.jpg)
+
+If all is ok, you should get a result like the one in the screenshot below
+
+![sparkles](pictures/image328.jpg)
+
+Now, if you query your table, you can see that the data in the Request column are encrypted
+
+![sparkles](pictures/image329.jpg)
+
+## SQL Data Sync ##
+
+In the case you have to synchronize bi-directionally data across multiple SQL sources (on-premise or in the Cloud), it's a good idea to read [this article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-sync-data) ![sparkles](pictures/WhiteRabbit.jpg)
+
+## Azure Data Factory and Powershell ##
 
 
 #
