@@ -1149,6 +1149,10 @@ During the process to encrypt your data you will have to choose between determin
   
 - **Randomized** encryption uses a method that encrypts data in a less predictable manner. Randomized encryption is more secure, but prevents searching, grouping, indexing, and joining on encrypted columns.
 
+- Use deterministic encryption for columns that will be used as search or grouping parameters, for example a government ID number. 
+- Use randomized encryption, for data such as confidential investigation comments, which are not grouped with other records and **are not used to join tables.**
+
+
 From SSMS, right click the WikipediaLogs table and select "**Encrypt Columns...**"
 
 ![sparkles](pictures/image322.jpg)
