@@ -1187,6 +1187,20 @@ In the case you have to synchronize bi-directionally data across multiple SQL so
 
 ## Azure Data Factory and Powershell ##
 
+Below the sequence to create an Azure Data Factory pipeline with PowerShell. (Order matters) ![sparkles](pictures/WhiteRabbit.jpg)
+
+- **optional**: create a resources group
+- Data Factory creation: Set-AzDataFactoryV2
+- Linked Services creation: Set-AzDataFactoryV2LinkedService
+- Datasets creation: Set-AzDataFactoryV2Dataset
+- Pipeline creation: Set-AzDataFactoryV2Pipeline
+- Run the pipeline: Invoke-AzDataFactoryV2Pipeline
+- Get details about the run: Get-AzDataFactoryV2ActivityRun
+
+More details are availble in [this article](https://docs.microsoft.com/en-us/azure/data-factory/scripts/bulk-copy-powershell?toc=%2fpowershell%2fmodule%2ftoc.json#sample-script
+)
+
+
 
 #
 [Franck Mercier](https://www.linkedin.com/in/mercierfranck/)
