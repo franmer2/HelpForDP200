@@ -867,7 +867,7 @@ We can achieve that with 2 steps
 
 ## Schedule daily Azure Data Factory pipeline execution ##
 
-Now it could be nice to have our pipeline runs every day to feed our database and get up to date report. Azure Data Factory has the capability to define triggers to be executed according rules and time you can defined.
+Now it could be nice to have our pipeline runs every day to feed our database and get the report up to date. Azure Data Factory has the capability to define triggers to be executed according rules and time you can defined.
 
 
 Go back to Azure Data Factory and jump into your pipeline.
@@ -915,13 +915,14 @@ If I click on the error indicator, I can see clearly when and where the error oc
 # Tips and Tricks for DP200 #
 
 
-Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept and Azure Analysis Services. I will also talk quickly about Azure Data Factory creation with Powershell and some other stuffs helpful for the exam. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
+Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
 
 ![sparkles](pictures/image308.jpg)
 
 ## Polybase ##
 
-Azure SQL database has a cool concept called "Polybase". Polybase allows to create external table that just hold the schema but the data stay in it's original storage. In our case, we will create an Azure Data Warehouse service, and create external table only with the wikipedia data schema and point to our datalake (to the result zone).
+[Azure SQL Data Warehouse] (https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-overview-what-is
+) (our Massively Parallel Processing (MPP) Enterprise Data Warehouse) has a cool concept called "Polybase". Polybase allows to create external table that just hold the schema but the data stay in it's original storage. In our case, we will create an Azure Data Warehouse service, and create external table only with the wikipedia data schema and point to our datalake (to the result zone).
 
 ### Create Azure SQL Data Warehouse ###
 
@@ -967,20 +968,23 @@ Below the sequence in order to configure Polybase ![sparkles](pictures/WhiteRabb
 - **Optional:** Create a user for loading data
 - Create a Master Key
 - Create a database scope credential
-- Create an external data source- 
+- Create an external data source
 - Create External File Format
-- Create schema for external table
+- **Optional:** Create schema for external table
 - Create external table
 - **Optional:** Create statisitics
 - All the steps above is well detailed in this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/load-data-wideworldimportersdw) ![sparkles](pictures/WhiteRabbit.jpg) 
 
 ### Create a master key ###
+If not yet created in your SQL Server, create a new master key
 
 `CREATE MASTER KEY;`
 
 ### Create a database scope credential ###
 
-We will create a database scope credential by using the service principal we created at the begin of this article (FranmerTheVaultGen2)
+At the date I'm writing this article, Polybase can connect to Data Lake Gen2 on with account storage key.
+
+You can use whatever you want for **IDENTITY** in the script below:
 
 
 
@@ -999,7 +1003,7 @@ WITH
 
 ### Create the external data source ###
 
-Now we need to create an external data source to our Data Lakge Gen2. Below, generic code to connect to ADLS Gen2
+Now we need to create an external data source to our Data Lake Gen2. Below, generic code to connect to ADLS Gen2
 
 ` 
 CREATE EXTERNAL DATA SOURCE AzureDataLakeStorage
@@ -1024,8 +1028,9 @@ WITH (
 
 ![sparkles](pictures/image316.jpg)
 
-### Create the external data source ###
+### Configure data format ###
 
+To be able to query our data, we need to specify the external data format
 
 `
 CREATE EXTERNAL FILE FORMAT TextFileFormat
@@ -1095,7 +1100,41 @@ It could be a good idea to monitor your Azure SQL Data Warehouse, especially the
 
 This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache) I highly recommend to read ![sparkles](pictures/WhiteRabbit.jpg).
 
-Have a special read to the [cache hit and used percentage section](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache#cache-hit-and-used-percentage) ![sparkles](pictures/WhiteRabbit.jpg)
+And find a room in your brain to store this table [cache hit and used percentage section](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache#cache-hit-and-used-percentage) ![sparkles](pictures/WhiteRabbit.jpg)
+
+
+## Backup SQL and move it to another destination ##
+
+There are several ways to backup SQL data, but 2 of them deserves our attention: Bacpac and Dacpac. Below a quick description ![sparkles](pictures/WhiteRabbit.jpg)
+
+- A BACPAC is a Windows file with a .bacpac extension that encapsulates a database's **schema and data** . The primary use case for a BACPAC is to move a database from one server to another - or to migrate a database from a local server to the cloud - and archiving an existing database in an open format.
+
+- A DACPAC is focused on capturing and deploying schema, including upgrading an existing database. The primary use case for a DACPAC is to deploy a tightly defined schema to development, test, and then to production environments. And also the reverse: capturing production's schema and applying it back to test and development environments. In other words, DACPAC **only contains the schema**, not the data.
+
+## SQL Database ServiceObjective ##
+
+Maybe you need to get information about your SQL database edition and ServiceObjective
+
+To get the information, you can use the following T-SQL script in SSMS
+
+`
+SELECT DATABASEPROPERTYEX('Musicology','Edition') AS Edition
+, DATABASEPROPERTYEX('Musicology','ServiceObjective') AS ServiceObjective
+`
+
+![sparkles](pictures/image320.jpg)
+
+And maybe you need to modify the serviceobjective via T-SQL, in this case you have to use **SERVICE_OBJECTIVE** argument with the T-SQL script below:  ![sparkles](pictures/WhiteRabbit.jpg)
+
+`
+ALTER DATABASE [Musicology] MODIFY(EDITION = 'standard', MAXSIZE = 100 MB, SERVICE_OBJECTIVE = 'S0');
+`
+(You have to wait few minutes before to see the changes)
+
+Il you run again the first T-SQL script, you can see the new the new edition and ServiceObjective
+
+![sparkles](pictures/image321.jpg)
+
 
 #
 [Franck Mercier](https://www.linkedin.com/in/mercierfranck/)
