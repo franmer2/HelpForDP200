@@ -197,7 +197,7 @@ Return to your resource group and select your storage account
 
 ![sparkles](pictures/image033.jpg)
 
-Then click on "**Access Control (IAM)**"
+Then click on "**Access Control (IAM)**" (Actually, we are in the process to define access management for Cloud resources. To manage access control, we use what we called **Role-based access control** (RBAC). [This article](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview) will give you a good overview of what RBAC is. ![sparkles](pictures/WhiteRabbit.jpg) )
 
 ![sparkles](pictures/image034.jpg)
 
@@ -871,7 +871,7 @@ Now it could be nice to have our pipeline runs every day to feed our database an
 
 
 Go back to Azure Data Factory and jump into your pipeline.
-Click on "**Add trigger**" and "**New/Edit**"
+Click on "**Add trigger**" and "**New/Edit**" ![sparkles](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image300.jpg)
 
@@ -893,10 +893,11 @@ In the Edit Trigger pane, enter parameters like showns below and click "**Finish
 |Day|`@adddays(utcnow(),-1,'dd')`|
 |Hours|`[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]`|
 
+(The pipeline may fail at the beginning of each month. I need to solve the issue with the first day of each month and the delay between logs availability on Wikipedia site and UTC time)
 
 ![sparkles](pictures/image303.jpg)
 
-Now, your trigger is created and can be monitored in the Azure Data Factory "**Monitor**" section
+Now, your trigger is created and can be monitored in the Azure Data Factory "**Monitor**" section ![sparkles](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image304.jpg)
 
@@ -1191,7 +1192,7 @@ In the case you have to synchronize bi-directionally data across multiple SQL so
 
 ## Azure Data Factory and Powershell ##
 
-Below the sequence to create an Azure Data Factory pipeline with PowerShell. (Order matters) ![sparkles](pictures/WhiteRabbit.jpg)
+It’s possible to automate pipeline creation with PowerShell. Below the sequence to create an Azure Data Factory pipeline with PowerShell. (order matters) ![sparkles](pictures/WhiteRabbit.jpg)
 
 - **optional**: create a resources group
 - Data Factory creation: Set-AzDataFactoryV2
@@ -1204,6 +1205,38 @@ Below the sequence to create an Azure Data Factory pipeline with PowerShell. (Or
 More details are availble in [this article](https://docs.microsoft.com/en-us/azure/data-factory/scripts/bulk-copy-powershell?toc=%2fpowershell%2fmodule%2ftoc.json#sample-script
 )
 
+## Azure Data Factory and Integration Runtime ##
+
+Azure Data Factory relies on Integration Runtime, a compute infrastructure, to provide several data integration capabilities like:
+
+- **Data Flow**: Execute a [Data Flow](https://docs.microsoft.com/en-us/azure/data-factory/concepts-data-flow-overview) in managed Azure compute environment.
+- **Data movement**: Copy data across data stores in public network and data stores in private network (on-premises or virtual private network). It provides support for built-in connectors, format conversion, column mapping, and performant and scalable data transfer.
+- **Activity dispatch**: Dispatch and monitor transformation activities running on a variety of compute services such as Azure Databricks, Azure HDInsight, Azure Machine Learning, Azure SQL Database, SQL Server, and more.
+- **SSIS package execution**: Natively execute SQL Server Integration Services (SSIS) packages in a managed Azure compute environment.
+
+There are several Integration Runtime types ![sparkles](pictures/WhiteRabbit.jpg) 
+
+| IR Type  |      Public network |Private network|
+| :---- | :-------- |:--------|
+| **Azure**  |Data Flow|
+|   |Data movement   ||
+||Activity dispatch||
+| **Self-hosted** |    Data movement |Data movement|
+||Activity dispatch|Activity dispatch|
+| **Azure-SSIS**   |SSIS package execution|SSIS package execution|
+
+More information can be found in [this article](https://docs.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime
+)
+
+
+I know that is a very long article, but I think it will help you to build a good knowledge on our data platform and maximize your chances to pass DP200 exam (and maybe the DP201 ;)). I also recommend having a look on the following topics that I don't cover in this article:
+
+- Azure Cosmos DB (have a special read on how create collections and how to deal with partition)
+- A read on HDInsight (Storm, MapReduce and Spark)
+- File type (Avro, Parquet, ORC) ![sparles](pictures/WhiteRabbit.jpg)
+- ARM Template (you can check the ARM part of my [original article](https://github.com/franmer2/demowikipedia))
+- Real Time data (Stream Analytics, Event hub, Edge)
+- SQL Data Warehouse [distributed tables](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-tables-distribute) ![Sparkles](pictures/WhiteRabbit.jpg)
 
 
 #
