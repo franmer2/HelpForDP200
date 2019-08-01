@@ -915,6 +915,57 @@ If I click on the error indicator, I can see clearly when and where the error oc
 
 # Tips and Tricks for DP200 #
 
+## Secure your storage layer ##
+
+### Data Lake Gen2 ###
+
+ I highly recommend to have a look to [this article](https://docs.microsoft.com/en-us/azure/storage/common/storage-advanced-threat-protection).   
+
+Concerning our Data Lake Gen2 storage, we will secure it by using the **Advanced Threat Protection** feature.
+
+From the Azure Portal, click on your Data Lake Gen2 resouce and then click on **Advanced security**. Then click on "**Enable Advanced Thread Protection**"
+
+![sparkles](pictures/image330.jpg)
+
+A new window appears and will give you recommendations an security alerts. You can also get all recommendations by clicking on "**View all recommendations in Security Center**" button.
+
+![sparkles](pictures/image331.jpg)
+
+
+## Secure SQL Database ##
+To secure your SQL database, you can use the features listed below:
+
+- Always Encrypted (we will see this feature later in the article)
+- Dynamic Data Masking
+- Row Level Security
+
+### Dynamic Data Masking ###
+
+You can setup dynamic data masking through Azure portal. From your SQL Database resource, click on "**Dynamic Data Masking**"
+
+![sparkles](pictures/image332.jpg)
+
+Click on "**Add mask**" button
+
+![sparkles](pictures/image333.jpg)
+
+Choose a column and define a mask and click on the "**Add**" button
+
+![sparkles](pictures/image334.jpg)
+
+The new field is ready to be masked. To vailidate, click on "**Save**" button.
+
+![sparkles](pictures/image335.jpg)
+
+You can setup dynamic data masking with T-SQL script. More info in [this article](https://docs.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking?view=sql-server-2017)
+
+
+
+You can also setup dynamic data masking with Powershell or REST API. more details in [this article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started
+)
+
+
+
 
 Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
 
