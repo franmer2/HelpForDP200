@@ -933,13 +933,15 @@ A new window appears and will give you recommendations an security alerts. You c
 
 
 ## Secure SQL Database ##
-To secure your SQL database, you can use the features listed below:
+To secure your SQL database, you can use the features listed below: ![sparkles](pictures/WhiteRabbit.jpg)
 
 - Always Encrypted (we will see this feature later in the article)
 - Dynamic Data Masking
 - Row Level Security
 
 ### Dynamic Data Masking ###
+
+[This article](https://docs.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking?view=sql-server-2017) will give you a good overview of what Dynamic Data Masking is.
 
 You can setup dynamic data masking through Azure portal. From your SQL Database resource, click on "**Dynamic Data Masking**"
 
@@ -964,14 +966,20 @@ You can setup dynamic data masking with T-SQL script. More info in [this article
 You can also setup dynamic data masking with Powershell or REST API. more details in [this article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started
 )
 
+### Dynamic Data Masking ###
 
 
+
+
+
+
+# Polybase #
 
 Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
 
 ![sparkles](pictures/image308.jpg)
 
-## Polybase ##
+
 
 [Azure SQL Data Warehouse] (https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-overview-what-is
 ) (our Massively Parallel Processing (MPP) Enterprise Data Warehouse) has a cool concept called "Polybase". Polybase allows to create external table that just hold the schema but the data stay in it's original storage. In our case, we will create an Azure Data Warehouse service, and create external table only with the wikipedia data schema and point to our datalake (to the result zone).
