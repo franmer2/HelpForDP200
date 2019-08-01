@@ -913,7 +913,7 @@ If I click on the error indicator, I can see clearly when and where the error oc
 
 ![sparkles](pictures/image307.jpg)
 
-# Tips and Tricks for DP200 #
+# Tips and Tricks for the exam #
 
 ## Secure your storage layer ##
 
@@ -938,6 +938,7 @@ To secure your SQL database, you can use the features listed below: ![sparkles](
 - Always Encrypted (we will see this feature later in the article)
 - Dynamic Data Masking
 - Row Level Security
+- Advanced Data Security
 
 ### Dynamic Data Masking ###
 
@@ -966,14 +967,52 @@ You can setup dynamic data masking with T-SQL script. More info in [this article
 You can also setup dynamic data masking with Powershell or REST API. more details in [this article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started
 )
 
-### Dynamic Data Masking ###
+### Row Level Security ###
+
+Row-Level Security enables you to use group membership or execution context to control access to rows in a database table.
+
+[This article](https://docs.microsoft.com/en-us/sql/relational-databases/security/row-level-security?view=sql-server-2017
+) will give more more details on this feature
+
+You can use this article's examples with the SQL database you have created in this article.
+
+### Advanced Data Security ###
+
+Through the Azure Portal, you can leverage Advanced Data Security capabilities, a **database level**, for:
+
+- Data Discovery and Classification
+- Vulnerability Assessment
+- Advanced Threat Protection
+
+![sparkles](pictures/image336.jpg)
+
+At the Azure SQL **server** level, you can also define periodic reccuring scans and get the repport through email
+
+![sparkles](pictures/image339.jpg)
+
+Below a screeshot of a mail I received each week:
+
+![sparkles](pictures/image440.jpg)
+
+
+
+### Auditing ###
+You can activate the auditing feature. You can choose the log destination between:
+
+- Storage account
+- Log Analytics
+- Event Hub (for real time log analysis scenario, for instance)
+
+![sparkles](pictures/image337.jpg)
+
+If you choose log Analytics, this below a sample of what you can get via Azure Monitor
+
+![sparkles](pictures/image338.jpg)
 
 
 
 
-
-
-# Polybase #
+## Polybase ##
 
 Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
 
@@ -1154,7 +1193,7 @@ Select * from [Wikipedia_external]
 To complete your skills with polybase, I highly recommend reading this [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-load-from-azure-data-lake-store) ![sparkles](pictures/WhiteRabbit.jpg) 
 
 
-## Azure Data Warehouse Monitoring ##
+# Azure Data Warehouse Monitoring #
 
 It could be a good idea to monitor your Azure SQL Data Warehouse, especially the cache usage
 
@@ -1163,7 +1202,7 @@ This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/s
 And find a room in your brain to store this table [cache hit and used percentage section](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache#cache-hit-and-used-percentage) ![sparkles](pictures/WhiteRabbit.jpg)
 
 
-## Backup SQL and move it to another destination ##
+# Backup SQL and move it to another destination #
 
 There are several ways to backup SQL data, but 2 of them deserves our attention: Bacpac and Dacpac. Below a quick description ![sparkles](pictures/WhiteRabbit.jpg)
 
@@ -1171,7 +1210,7 @@ There are several ways to backup SQL data, but 2 of them deserves our attention:
 
 - A DACPAC is focused on capturing and deploying schema, including upgrading an existing database. The primary use case for a DACPAC is to deploy a tightly defined schema to development, test, and then to production environments. And also the reverse: capturing production's schema and applying it back to test and development environments. In other words, DACPAC **only contains the schema**, not the data.
 
-## SQL Database ServiceObjective ##
+# SQL Database ServiceObjective #
 
 Maybe you need to get information about your SQL database edition and ServiceObjective
 
@@ -1196,7 +1235,7 @@ If you run again the first T-SQL script, you can see the new edition and Service
 
 ![sparkles](pictures/image321.jpg)
 
-## Protect your SQL data with always encrypted ##
+# Protect your SQL data with always encrypted #
 
 From [this article](https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/always-encrypted-database-engine?view=sql-server-2017
 ), there is a good definition of what always encrypted is:
@@ -1245,11 +1284,11 @@ Now, if you query your table, you can see that the data in the Request column ar
 
 ![sparkles](pictures/image329.jpg)
 
-## SQL Data Sync ##
+# SQL Data Sync #
 
 In the case you have to synchronize bi-directionally data across multiple SQL sources (on-premise or in the Cloud), it's a good idea to read [this article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-sync-data) ![sparkles](pictures/WhiteRabbit.jpg)
 
-## Azure Data Factory and Powershell ##
+# Azure Data Factory and Powershell #
 
 It’s possible to automate pipeline creation with PowerShell. Below the sequence to create an Azure Data Factory pipeline with PowerShell. (order matters) ![sparkles](pictures/WhiteRabbit.jpg)
 
@@ -1264,7 +1303,7 @@ It’s possible to automate pipeline creation with PowerShell. Below the sequenc
 More details are availble in [this article](https://docs.microsoft.com/en-us/azure/data-factory/scripts/bulk-copy-powershell?toc=%2fpowershell%2fmodule%2ftoc.json#sample-script
 )
 
-## Azure Data Factory and Integration Runtime ##
+# Azure Data Factory and Integration Runtime #
 
 Azure Data Factory relies on Integration Runtime, a compute infrastructure, to provide several data integration capabilities like:
 
@@ -1287,7 +1326,7 @@ There are several Integration Runtime types ![sparkles](pictures/WhiteRabbit.jpg
 More information can be found in [this article](https://docs.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime
 )
 
-
+# Conclusion #
 I know that is a very long article, but I think it will help you to build a good knowledge on our data platform and maximize your chances to pass DP200 exam (and maybe the DP201 ;)). I also recommend having a look on the following topics that I don't cover in this article:
 
 - Azure Cosmos DB (have a special read on how create collections and how to deal with partition)
