@@ -1,7 +1,7 @@
 This long article will help you to prepare for passing DP 200 exam.
 The first part of the article is about all the steps to build an analytic solution from scratch. At the end of this part, you will also get a cool demo to showcase to your customers.
 
-The second part of this article is about some tips and tricks I think it could help to pass the exam. I highly recommend to “follow the white rabbit” ![sparkles](pictures/WhiteRabbit.jpg).
+The second part of this article is about some tips and tricks I think it could help to pass the exam. I highly recommend to [“follow the white rabbit”](https://www.youtube.com/watch?v=6IDT3MpSCKI) ![sparkles](pictures/WhiteRabbit.jpg).
 
 # Build an Analytic solution in Azure
 
@@ -81,7 +81,7 @@ Then fill out the creation form. Here, I decide to create my data lake in the "P
 
 ![sparkles](pictures/image010.png)
 
-Then click on the "**Advanced**" tab, then in the "**Data Lake Storage gen2**" section, click on "**Enabled**". This will enable new features related to the new version of our data lake.
+Then click on the "**Advanced**" tab, then in the "**Data Lake Storage gen2**" section, click on "**Enabled**". This will enable new features related to the new version of our data lake.![sparkles](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image011.jpg)
 
@@ -101,7 +101,7 @@ From the Azure portal, click on "**Create a resource**", "**Database**", then "*
 
 ![sparkles](pictures/image014.jpg)
 
-Fill out the database creation form and click on "**Review + Create**". For this article, I will call the database "**Musicology**", and I will keep the level of Tier to basic. Nothing will prevent us subsequently to change this level of performance according to the needs (principle of elasticity).
+Fill out the database creation form and click on "**Review + Create**". For this article, I will call the database "**Musicology**", and I will keep the level of Tier to basic. Nothing will prevent us subsequently to change this level of performance according to the needs (principle of elasticity). (This change can also be done programmatically by using SERVICE_OBJECTIVE argument, but we will discuss this point later in the article ![sparkles](pictures/WhiteRabbit.jpg))
 
 ![sparkles](pictures/image015.jpg)
 
@@ -248,7 +248,7 @@ A little further down in this article, we'll add a secret for the integration be
 
 ### Integration with Azure Key Vault
 
-We will now configure Azure Databricks so that it can use the secrets set in Azure Key Vault. For information, the complete documentation is [here](https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html).
+We will now configure Azure Databricks so that it can use the secrets set in Azure Key Vault. For information, the complete documentation is [here](https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html). ![sparkle](pictures/WhiteRabbit.jpg)
 
 Return to your resource group and click on your Azure Databricks service:
 
@@ -308,7 +308,7 @@ If all goes well, the notebook should be in your workspace as shown below
 ![sparkles](pictures/image050.jpg)
 
 ## Creating access tokens
-We will create the access tokens for Power BI and Azure Data FactoryAt the top right of your workspace, click on the character icon and then on "**User Settings**"
+We will create the access tokens for Power BI and Azure Data FactoryAt the top right of your workspace, click on the character icon and then on "**User Settings**" ![sparkle](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image051.jpg)
 
@@ -344,7 +344,7 @@ We will now develop our data lake to create an area for raw data from Wikipedia,
 
 ![sparkles](pictures/image057.png)
 
-The zone "demo_datasets" will be created manually. The "wikipedia_results" zone will be created automatically by Azure Databricks. In order to interact with Azure Data Lake Gen2, yo can use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/). From Azure Storage Explorer, sign in to your Azure account. Find your lake of data, do a right click on it, then create a container "**wikipedia**"
+The zone "demo_datasets" will be created manually. The "wikipedia_results" zone will be created automatically by Azure Databricks. In order to interact with Azure Data Lake Gen2, yo can use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/). From Azure Storage Explorer, sign in to your Azure account. Find your lake of data, do a right click on it, then create a container "**wikipedia**". ![sparkles](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image058.jpg)
 
@@ -514,7 +514,7 @@ Click in the field "**Relative URL**" then on "**Add dynamic content**"
 
 ![sparkles](pictures/image084.jpg)
 
-Copy the string below into the "**Add Dynamic Content**" field and click on "**Finish**" (you may have an error after the copy/paste, in this case, double check the quotes (')):
+Copy the string below into the "**Add Dynamic Content**" field and click on "**Finish**" (you may have an error after the copy/paste, in this case, double check the quotes (')): ![sparkles](pictures/WhiteRabbit.jpg)
 
 `  @concat(dataset().YearDS,'/',dataset().YearDS,'-',dataset().MonthDS,'/pageviews-',dataset().YearDS,dataset().MonthDS,dataset().DayDS,if(less(int(dataset().HourDS),10),'-0','-'),dataset().HourDS,'0000.gz')`
 
@@ -622,7 +622,7 @@ In the example, I added some default values for the example (especially in the A
 
 ### Creation of the "Delete" activity
 
-As this activity does not exist yet in the list of available activities, we will create it by code. (Edit : this )
+As this activity does not exist yet in the list of available activities, we will create it by code. (Edit: the delete activity is now available through the UI, but you can still do it via the code just for training ![sparkles](pictures/WhiteRabbit.jpg))
 
 Click on the "**Code**" button to display the code editor
 
