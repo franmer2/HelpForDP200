@@ -1360,6 +1360,36 @@ By default the driver node uses the same instance type as the worker node
 
 *Note*: have in mind that Azure Databricks bills you for virtual machines (VMs) provisioned in clusters **AND** Databricks Units (DBUs) based on the VM instance selected. A DBU is a unit of processing capability per hour. More details in [this article](https://azure.microsoft.com/en-us/pricing/details/databricks/)
 
+Few minutes after clicking the create cluster, you should get a new cluster running
+
+![sparkles](pictures/image443.jpg)
+
+On the left, click on "**Recents**" button en select the notebook
+
+![sparkles](pictures/image444.jpg)
+
+You need to attach the notebook to a cluster. Click on "**Detached**" and select a cluster
+
+![sparkles](pictures/image445.jpg)
+
+Before running the notebook, you have to enter parameters
+
+![sparkles](pictures/image446.jpg)
+
+You can run the whole notebook or cell by cell.
+
+If you want to run all the notebook, click on "**Run All**" button
+
+![sparkles](pictures/image447.jpg)
+
+If you want to run the notebook cell by cell, click on a cell and hit the "**Shift**" + "**Enter**" key or click on the arrow on the top left pf the cell
+
+![sparkles](pictures/image448.jpg)
+
+**WARNING**: to test the notebook with interactive cluster, be sure you have files in the *demo_datasets* folder in your data lake, do it **cell by cell** and start from the cell **cmd4**
+
+![sparkles](pictures/image449.jpg)
+
 
 
 # Conclusion #
