@@ -1386,7 +1386,7 @@ If you want to run the notebook cell by cell, click on a cell and hit the "**Shi
 
 ![sparkles](pictures/image448.jpg)
 
-**WARNING**: to test the notebook with interactive cluster, be sure you have files in the *demo_datasets* folder in your data lake, set the parameters according the files in the folder, do it **cell by cell** and start from the cell **cmd4**
+**WARNING**: in our case, to test the notebook with interactive cluster, be sure you have files in the *demo_datasets* folder in your data lake, set the parameters according the files in the folder, do it **cell by cell** and start from the cell **cmd4**
 
 ![sparkles](pictures/image449.jpg)
 
