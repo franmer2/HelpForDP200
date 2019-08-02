@@ -307,6 +307,12 @@ If all goes well, the notebook should be in your workspace as shown below
 
 ![sparkles](pictures/image050.jpg)
 
+========================================
+
+Later in this article, we will see how to use this notebook with interactive cluster. It could be a good option to test the notebook before to run it in production ![sparkles](pictures/WhiteRabbit.jpg)
+
+========================================
+
 ## Creating access tokens
 We will create the access tokens for Power BI and Azure Data FactoryAt the top right of your workspace, click on the character icon and then on "**User Settings**" ![sparkle](pictures/WhiteRabbit.jpg)
 
@@ -1325,6 +1331,36 @@ There are several Integration Runtime types ![sparkles](pictures/WhiteRabbit.jpg
 
 More information can be found in [this article](https://docs.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime
 )
+
+## Azure Databricks and Interactive cluster ##
+Previously in this article, we invoked Azure Databrick's notebook via Azure Data Factory. But you can also use the notebook with interactive cluster.
+
+From your Azure Databricks's workspace, on the left, click on "**Clusters**" then on "**Create Cluster**"
+
+![sparkles](pictures/image441.jpg)
+
+Fill the creation cluster form
+
+![sparkles](pictures/image442.jpg)
+
+You have to choose for a cluster mode ![sparkles](pictures/WhiteRabbit.jpg)
+
+- **Standard** clusters are the default and can be used with Python, R, Scala, and SQL. Standard clusters are configured to automatically terminate after 120 minutes.
+- **High-concurrency** clusters are tuned to provide the efficient resource utilization, isolation, security, and the best performance for sharing by multiple concurrently active users. High concurrency clusters support only SQL, Python, and R languages. High concurrency clusters are configured to not terminate automatically.
+
+Select the worker type and driver typpe you need
+
+- **Workers** type run the Spark executors and other services required for the proper functioning of the clusters. When you distribute your workload with Spark, all of the distributed processing happens on workers.
+
+
+- **Driver** type maintains state information of all notebooks attached to the cluster. The driver node is also responsible for maintaining the SparkContext and interpreting all the commands you run from a notebook or a library on the cluster. The driver node also runs the Apache Spark master that coordinates with the Spark executors.
+The default value of the driver node type is the same as the worker node type. You can choose a larger driver node type with more memory if you are planning to collect() a lot of data from Spark workers and analyze them in the notebook.
+
+By default the driver node uses the same instance type as the worker node
+
+*Note*: have in mind that Azure Databricks bills you for virtual machines (VMs) provisioned in clusters **AND** Databricks Units (DBUs) based on the VM instance selected. A DBU is a unit of processing capability per hour. More details in [this article](https://azure.microsoft.com/en-us/pricing/details/databricks/)
+
+
 
 # Conclusion #
 I know that is a very long article, but I think it will help you to build a good knowledge on our data platform and maximize your chances to pass DP200 exam (and maybe the DP201 ;)). I also recommend having a look on the following topics that I don't cover in this article:
