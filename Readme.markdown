@@ -1,7 +1,7 @@
 This long article will help you to prepare for passing DP 200 exam.
-The first part of the article is about all the steps to build an analytic solution from scratch. At the end of this part, you will also get a cool demo to showcase to your customers.
+The first part of the article is about all the steps to build an analytic solution from scratch. And bonus, you will also get a cool demo to showcase to your customers.
 
-The second part of this article is about some tips and tricks I think it could help to pass the exam. I highly recommend to [“follow the white rabbit”](https://www.youtube.com/watch?v=6IDT3MpSCKI) ![sparkles](pictures/WhiteRabbit.jpg).
+The second part of this article provides some tips and tricks to help you pass the exam. I highly recommend to [“follow the white rabbit”](https://www.youtube.com/watch?v=6IDT3MpSCKI) ![sparkles](pictures/WhiteRabbit.jpg).
 
 # Build an Analytic solution in Azure
 
@@ -15,19 +15,19 @@ To build our solution, we will use several services of our data platform
 - Azure SQL Database for the data presentation layer
 - Power BI Desktop, for data mining and reporting  
 
-Of course we will add some bricks of our infrastructure as:
+Of course we will add some infrastructure components as well:
 - Azure Active Directory
 - Azure Key Vault
 
-Before we begin, let's do a quick focus on Azure Data Factory and Azure Databriks
+Before we begin, let's do a quick review of Azure Data Factory and Azure Databriks
 
 ### Azure Data Factory v2
-Azure Data Factory v2 is a fully managed cloud service that enables the orchestration of data movement and transformation processes. Completely integrated with Azure, It allows during the data movements, to invoke other services, such as Azure Databricks or Logic App, to transform and enrich your data. Azure Data Factory v2 also integrates with Azure Devops for integration and continuous development. In addition, with the ability to transform pipelines into ARM models, it is very easy to deploy them in other environments.
+Azure Data Factory v2 is a fully managed cloud service that enables the orchestration of data movement and transformation processes. Completely integrated with Azure, it can invoke other services during the data movements, such as Azure Databricks or Logic App, to transform and enrich your data. Azure Data Factory v2 also integrates with Azure Devops for integration and continuous development. In addition, with the ability to transform pipelines into ARM models, it makes very easy to deploy them to other environments.
 
 ![sparkles](pictures/image003.png)
 
 ### Azure Databricks
-Based on Spark, Azure Databricks is a workspace that allows collaboration between the company's stakeholders to bring innovation through continuous experimentation. Being integrated with Azure DevOps, Azure Databricks enters completely into a CI / CD process as illustrated in [Benjamin Leroux's post](https://thedataguy.blog/ci-cd-with-databricks-and-azure-devops/). Azure Databricks allows the collaboration around Notebooks, which support several languages such as Python, Scala, SQL, ..., and allows the execution of these notebooks both manual and automatic, via "jobs", orchestrated by Azure Data Factory
+Based on Spark, Azure Databricks is a workspace that fosters collaboration between the company's stakeholders to bring innovation through continuous experimentation. Being integrated with Azure DevOps, Azure Databricks fits neatly in a CI / CD process as illustrated in [Benjamin Leroux's post](https://thedataguy.blog/ci-cd-with-databricks-and-azure-devops/). Azure Databricks allows the collaboration around Notebooks, which support several languages such as Python, Scala, SQL, ..., and allows the execution of these notebooks both manual and automatic, via "jobs", orchestrated by Azure Data Factory.
 
 ![sparkles](pictures/image004.png)
 
@@ -35,19 +35,17 @@ The notebook used for this example will do the following:
 - Read files deposited by Azure Data Factory into the data lake (Azure Data Lake Storage Gen2)
 - Process files to extract information
 - Create an archive file in the data lake
-- Insert the results into a SQL Database table for the re-porting part
+- Insert the results into a SQL Database table for the visualization
 
 The notebook used for this example is available [here](https://1drv.ms/u/s!Am-C-ktMH9lgg9MCqqG5dS8XKFKxDA) or [here](https://github.com/franmer2/demowikipedia)
 
 ### Few words about the data lake
-In modern data platform architecture solutions, it is important to separate storage space from data processing engines. This is exactly what we will do in this example. For this article, we will therefore develop our data lake in several zones, in order to preserve the state of the data according to the transformations that they will have undergone. Storage space is no longer a problem today, we will create multiple areas in our data lake as shown in the illustration below
+In modern data platform architecture solutions, it is important to separate storage space from data processing engine. This is exactly what we will do in this example. For this article, we will develop our data lake in several zones: one to to preserve the original state of the data, one staging (temp area), and one to store the end result of the transformations as shown in the illustration below
 
 ![sparkles](pictures/image005.png)
 
-Even if finally we will use only 2 persistent zones in our data lake for this example (and 1 temporary), the idea is to have several zones in order to preserve all the states of our data, of the raw state in the most refined one.
-
 ### Demonstration architecture
-At the end of this article we will have realized the following architecture. You will notice the separation of the storage of the calculation engine
+At the end of this article we will have implemented the following architecture. You will notice the separation of the storage from the calculation engine
 
 ![sparkles](pictures/image006.png)
 
@@ -60,7 +58,7 @@ At the end of this article we will have realized the following architecture. You
 ## Creating the solution
 ### Creating the resource group
 
-The resource group is a logical grouping of Azure services. For this article, we will group all the services used to build our solution in one resource group. But nothing prevents you from organizing your Azure services otherwise.
+A resource group is a logical grouping of Azure services. For this article, we will group all the services used to build our solution in one resource group. Nothing prevents you from organizing your Azure services in a different way.
 
 From the [Azure portal](https://portal.azure.com/), on the left, click on "**Resource groups**" then on the "**Add**" button.
 
@@ -109,7 +107,8 @@ On the "**Create + Review**" page, click on the "Create" button
 
 ![sparkles](pictures/image016.jpg)
 
-Once the database is created, consider setting up the "firewall" in case you want to use SQL Server Management Studio from a remote desktop.
+Once the database is created, consider setting up the "firewall" in case you want to use SQL Server Management Studio from a remote desktop. [Refer to the documentation](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-firewall-configure)![sparkles](pictures/WhiteRabbit.jpg).
+
 
 ![sparkles](pictures/image017.jpg)
 
@@ -128,8 +127,9 @@ From the Azure portal, click "**Create a resource**", "**Analytics**" and "**Azu
 
 ![sparkles](pictures/image020.jpg)
 
-Fill out the creation form. We will take the premium tier for integration with Azure Key Vault.This is especially recommended in the [Databricks documentation](https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html):
+Fill out the creation form. We will take the premium tier for integration with Azure Key Vault. The premium tier also supports role-based access control, [refer to pricing tiers.](https://azure.microsoft.com/en-us/pricing/details/databricks/)![sparkles](pictures/WhiteRabbit.jpg) 
 
+This is especially recommended in the [Databricks documentation](https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html):
 "*Your account must have the Azure Databricks Premium Plan for you to be able to select Creator. This is the recommended approach: grant MANAGE permission to the Creator when you create the secret scope, and then assign more granular access permissions after you have tested the scope. For an example workflow, see Secret Workflow Example*."
 
 For this article, I will name my Azure Databricks "**CrystalBall**" workspace.Click on the "**Create**" button
@@ -152,7 +152,7 @@ Fill out the creation form and click on the "**Create**" button
 ![sparkles](pictures/image024.jpg)
 
 
-If you have placed all your resources in the same resource group, you must obtain a result like the one in the screenshot below:
+If you have placed all your resources in the same resource group, you will see a result similar to the screenshot below:
 
 ![sparkles](pictures/image025.png)
 
@@ -220,7 +220,7 @@ In order for Azure Databricks to have access to Data Lake Gen2, we will need the
 - authentication-id
 - tenant-id 
 
-It is possible that some of this information must not appear in clear text in the Azure Databricks's notebooks. **This is where Azure Key Vault comes into action to protect passwords or logins.**
+As data engineers and scientits work in notebooks, the best practice is to avoid having secret information appear in clear text in the code. **This is where Azure Key Vault comes into action to protect passwords or logins.**
 For this example we will store only the different IDs.
 
 Click on your Azure Key Vault:
@@ -248,7 +248,7 @@ A little further down in this article, we'll add a secret for the integration be
 
 ### Integration with Azure Key Vault
 
-We will now configure Azure Databricks so that it can use the secrets set in Azure Key Vault. For information, the complete documentation is [here](https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html). ![sparkle](pictures/WhiteRabbit.jpg)
+We will now configure Azure Databricks so that it can use the secrets stored in Azure Key Vault. For information, the complete documentation is [here](https://docs.azuredatabricks.net/user-guide/secrets/secret-scopes.html). ![sparkle](pictures/WhiteRabbit.jpg)
 
 Return to your resource group and click on your Azure Databricks service:
 
@@ -289,8 +289,9 @@ If all goes well, you must have the following message. Click on the "**OK**" but
 
 ## Import Databricks's notebook
 
-For the continuation of the article, we will download the notebook (DatabricksNotebook_Wikipedia_ADLSGen2_Generic.dbc) which is at the following address: https://1drv.ms/u/s!Am-C-ktMH9lgg9MCqqG5dS8XKFKxDA or https://github.com/franmer2/HelpForDP200/tree/master/resources
+In this next section, we will download the notebook (DatabricksNotebook_Wikipedia_ADLSGen2_Generic.dbc) which is at the following address: https://1drv.ms/u/s!Am-C-ktMH9lgg9MCqqG5dS8XKFKxDA or https://github.com/franmer2/HelpForDP200/tree/master/resources. 
 
+Note that Databricks notebooks have the DBC file extension. ![sparkle](pictures/WhiteRabbit.jpg)
 
 
 **You will then have to modify the notebook to add your information concerning the application ID, the "data lake" as well as your SQL Database.**
@@ -309,12 +310,12 @@ If all goes well, the notebook should be in your workspace as shown below
 
 ========================================
 
-Later in this article, we will see how to use this notebook with interactive cluster. It could be a good option to test the notebook before to run it in production ![sparkles](pictures/WhiteRabbit.jpg)
+Later in this article, we will see how to use this notebook with interactive cluster. It would be a good option to test the notebook before you run it in production through Azure Data Factory, especially if you changed the names of the Azure resources, data lake zones/layout, or Key Vault secrets. ![sparkles](pictures/WhiteRabbit.jpg)
 
 ========================================
 
 ## Creating access tokens
-We will create the access tokens for Power BI and Azure Data FactoryAt the top right of your workspace, click on the character icon and then on "**User Settings**" ![sparkle](pictures/WhiteRabbit.jpg)
+We will create the access tokens for Power BI and Azure Data Factory. At the top right of your workspace, click on the character icon and then on "**User Settings**" ![sparkle](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image051.jpg)
 
@@ -350,7 +351,7 @@ We will now develop our data lake to create an area for raw data from Wikipedia,
 
 ![sparkles](pictures/image057.png)
 
-The zone "demo_datasets" will be created manually. The "wikipedia_results" zone will be created automatically by Azure Databricks. In order to interact with Azure Data Lake Gen2, yo can use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/). From Azure Storage Explorer, sign in to your Azure account. Find your lake of data, do a right click on it, then create a container "**wikipedia**". ![sparkles](pictures/WhiteRabbit.jpg)
+The zone "demo_datasets" will be created manually. The "wikipedia_results" zone will be created automatically by Azure Databricks. In order to interact with Azure Data Lake Gen2, you can use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/). From Azure Storage Explorer, sign in to your Azure account. Find your lake of data, do a right click on it, then create a container "**wikipedia**". ![sparkles](pictures/WhiteRabbit.jpg)
 
 ![sparkles](pictures/image058.jpg)
 
@@ -371,12 +372,12 @@ You should obtain the result below:
 
 ## Creating the Azure Data Factory pipeline
 
-The pipeline is quite simple for this example and will consist of the sequence of the following activities, while being based on input parameters (which is, by the way, one of the elements of the DataOps):
+The pipeline is quite simple for this example and will consist of the sequence of the following activities, while being based on input parameters (which is, by the way, one of the elements of DataOps):
 
 - Test the presence of the "demo_datasets" folder in the storage account
-- Deleting files from the raw area (demo_datasets) of the data lake
+- Delete files from the raw area (demo_datasets) of the data lake
 - Download log files (depending on user settings)
-- Invocation of an Azure Databricks notebook for data transformation and writing of results to another area of the data lake and in SQL Database.
+- Invoke an Azure Databricks notebook for data transformation and writing of results to another area of the data lake and in SQL Database.
 
 In the end, we will get a pipeline like the one shown below:
 
@@ -389,7 +390,7 @@ From the Azure portal, connect to your **Azure Data Factory** service
 
 Click on **"Author & Monitor"**
 
-(If you use MSDN subscription and facing infinite white screen, try to open your browser in private mode)
+(If you use MSDN subscription and facing infinite white screen, try to open your browser "in private" mode)
 
 ![sparkles](pictures/image064.jpg)
 
@@ -398,8 +399,8 @@ Click on **"Author & Monitor"**
 ### Creating linked services
 
 We will create 4 **Linked Services** for:
-- Azure Data Lake sotrage Gen2
-- The Wikipwdia log site
+- Azure Data Lake storage Gen2
+- The Wikipedia log site
 - Azure Key Vault
 - Azure Databricks
 
@@ -466,6 +467,8 @@ We will now create 3 "datasets":
 - 1 to retrieve Wikipedia logs (http), also with parameters
 - 1 for the data lake
 - 1 for the same data lake but with parameters
+
+The data type for all these files is binary.
 
 ### Creating the dataset for the Wikipedia logs site
 
@@ -607,7 +610,7 @@ Click on the "**+**" sign and then on "**Pipeline**"
 
 ### Pipeline settings
 
-In order to make our pipeline more agile, we will add parameters, which will allow us, for example, to recover the logs according to the date and times that interest us.
+In order to make our pipeline more agile, we will add parameters, which will allow us, for example, to process the logs according to the date and times that interest us.
 
 Click in a free space in the Pipeline Editor, then click on "**Parameters**" then on "**New**" (click 4 times on "New" to add 4 parameters)
 
@@ -830,7 +833,7 @@ Hopefully on the Azure Data Factory side, your pipeline should show "**Succeeded
 
 ![sparkles](pictures/image127.jpg)
 
-Power BI
+## Power BI ##
 
 We will now use Power BI Desktop to connect to our SQL Database. At the time of writing this article (17/03/2019), the Power BI connector for Azure Data Lake Gen2 Store is not yet available. From Power BI Desktop, click the "**Get Data**" button, and select "**SQL Server**"
 
@@ -873,7 +876,7 @@ We can achieve that with 2 steps
 
 ## Schedule daily Azure Data Factory pipeline execution ##
 
-Now it could be nice to have our pipeline runs every day to feed our database and get the report up to date. Azure Data Factory has the capability to define triggers to be executed according rules and time you can defined.
+Now, wouldn't it be nice to have our pipeline run every day to feed our database and get the report up to date? Azure Data Factory has the capability to define triggers to be executed according rules and time you can defined.
 
 
 Go back to Azure Data Factory and jump into your pipeline.
@@ -921,6 +924,8 @@ If I click on the error indicator, I can see clearly when and where the error oc
 
 # Tips and Tricks for the exam #
 
+ ![sparkles](pictures/WhiteRabbit.jpg) ![sparkles](pictures/WhiteRabbit.jpg) ![sparkles](pictures/WhiteRabbit.jpg)
+
 ## Secure your storage layer ##
 
 ### Data Lake Gen2 ###
@@ -966,12 +971,12 @@ The new field is ready to be masked. To vailidate, click on "**Save**" button.
 
 ![sparkles](pictures/image335.jpg)
 
-You can setup dynamic data masking with T-SQL script. More info in [this article](https://docs.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking?view=sql-server-2017)
-
-
+You can setup dynamic data masking with T-SQL script. More info in [this article](https://docs.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking?view=sql-server-2017) 
 
 You can also setup dynamic data masking with Powershell or REST API. more details in [this article](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started
 )
+
+Whichever option you pick to implement masking, it is very important to understand the distinctions of different masking functions as explained in [this article](https://docs.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking?view=sql-server-2017)
 
 ### Row Level Security ###
 
@@ -1020,14 +1025,14 @@ If you choose log Analytics, this below a sample of what you can get via Azure M
 
 ## Polybase ##
 
-Until know, you have a first vision of what an Analytics solution could be, but it's not the only pattern. To help you with DP 200, I change a little bit the architecture to introduce Azure DQL Data Warehouse with polybase concept. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice could be "Follow the white rabbit" ;)
+The solution we created is based on a high level pattern that can be adapted based on the project requirements. For example, what if we had to process massive amounts of data in our SQL database?  To help you with DP 200, let's change a little bit the architecture to introduce Azure SQL Data Warehouse with Polybase. Pay attention to the sentences with the white rabbit ![sparkles](pictures/WhiteRabbit.jpg) and my advice would be "Follow the white rabbit" ;)
 
 ![sparkles](pictures/image308.jpg)
 
 
 
 [Azure SQL Data Warehouse] (https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-overview-what-is
-) (our Massively Parallel Processing (MPP) Enterprise Data Warehouse) has a cool concept called "Polybase". Polybase allows to create external table that just hold the schema but the data stay in it's original storage. In our case, we will create an Azure Data Warehouse service, and create external table only with the wikipedia data schema and point to our datalake (to the result zone).
+) (our Massively Parallel Processing (MPP) Enterprise Data Warehouse) has a cool concept called "Polybase". Polybase allows to create external table that just hold the schema but the data stay in it's original storage. In our case, we will create an Azure Data Warehouse service, and create external table with the wikipedia data schema that points to our datalake (in the result zone).
 
 ### Create Azure SQL Data Warehouse ###
 
@@ -1053,7 +1058,7 @@ You can connect to your Datawarehouse with several tools like
 - Visual Studio
 - Azure Data Studio
 
-In our case, we will use SSMS. Below the connection windows. (in the case you can't connect to your server, check the [Azure SQL server firewall settings](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/load-data-wideworldimportersdw#create-a-server-level-firewall-rule)).
+In our case, we will use SSMS. See below the connection windows. (If you can't connect to your server, check the [Azure SQL server firewall settings](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/load-data-wideworldimportersdw#create-a-server-level-firewall-rule)).
 
 In the server name field, enter the name of SQL server on which you deployed your data warehouse. in our case, the server is called "fallinlove2nite.database.windows.net". For authentication, use the one you created during the server creation step above.
 
@@ -1201,7 +1206,7 @@ To complete your skills with polybase, I highly recommend reading this [article]
 
 # Azure Data Warehouse Monitoring #
 
-It could be a good idea to monitor your Azure SQL Data Warehouse, especially the cache usage
+It could be a good idea to monitor your Azure SQL Data Warehouse, especially the cache usage. For example you can track DWU Used metric to know if your database needs more compute capacity.
 
 This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache) I highly recommend to read ![sparkles](pictures/WhiteRabbit.jpg).
 
@@ -1396,12 +1401,11 @@ Before running the notebook, you have to enter parameters. (If widgets are not a
 
 
 # Conclusion #
-I know that is a very long article, but I think it will help you to build a good knowledge on our data platform and maximize your chances to pass DP200 exam (and maybe the DP201 ;)). I also recommend having a look on the following topics that I don't cover in this article:
+I know that is a very long article, but I think it helps you to build your knowledge on our data platform to maximize your chances with the DP200 exam (and maybe the DP201 ;)). I also recommend having a look on the following topics that I don't cover in this article:
 
 - Azure Cosmos DB (have a special read on how create collections and how to deal with partition)
 - A read on HDInsight (Storm, MapReduce and Spark)
 - File type (Avro, Parquet, ORC) ![sparles](pictures/WhiteRabbit.jpg)
-- ARM Template (you can check the ARM part of my [original article](https://github.com/franmer2/demowikipedia))
 - Real Time data (Stream Analytics, Event hub, Edge)
 - SQL Data Warehouse [distributed tables](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-tables-distribute) ![Sparkles](pictures/WhiteRabbit.jpg)
 
