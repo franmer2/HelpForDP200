@@ -1364,7 +1364,7 @@ Few minutes after clicking the create cluster, you should get a new cluster runn
 
 ![sparkles](pictures/image443.jpg)
 
-On the left, click on "**Recents**" button en select the notebook
+On the left, click on "**Recents**" button and select the notebook
 
 ![sparkles](pictures/image444.jpg)
 
