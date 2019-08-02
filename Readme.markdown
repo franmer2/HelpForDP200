@@ -1372,10 +1372,6 @@ You need to attach the notebook to a cluster. Click on "**Detached**" and select
 
 ![sparkles](pictures/image445.jpg)
 
-Before running the notebook, you have to enter parameters
-
-![sparkles](pictures/image446.jpg)
-
 You can run the whole notebook or cell by cell.
 
 If you want to run all the notebook, click on "**Run All**" button
@@ -1385,6 +1381,13 @@ If you want to run all the notebook, click on "**Run All**" button
 If you want to run the notebook cell by cell, click on a cell and hit the "**Shift**" + "**Enter**" key or click on the arrow on the top left pf the cell
 
 ![sparkles](pictures/image448.jpg)
+
+Before running the notebook, you have to enter parameters. (If widgets are not available, run cmd4 by hiting "**Shift**" + "**Enter**")
+
+![sparkles](pictures/image446.jpg)
+
+
+
 
 **WARNING**: in our case, to test the notebook with interactive cluster, be sure you have files in the *demo_datasets* folder in your data lake, set the parameters according the files in the folder, do it **cell by cell** and start from the cell **cmd4**
 
