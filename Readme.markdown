@@ -1333,7 +1333,7 @@ More information can be found in [this article](https://docs.microsoft.com/en-us
 )
 
 ## Azure Databricks and Interactive cluster ##
-Previously in this article, we invoked Azure Databrick's notebook via Azure Data Factory. But you can also use the notebook with interactive cluster.
+Previously in this article, we invoked Azure Databrick's notebook via Azure Data Factory. But you can also use the notebook with interactive cluster. ![sparkles](pictures/WhiteRabbit.jpg)
 
 From your Azure Databricks's workspace, on the left, click on "**Clusters**" then on "**Create Cluster**"
 
@@ -1386,7 +1386,7 @@ If you want to run the notebook cell by cell, click on a cell and hit the "**Shi
 
 ![sparkles](pictures/image448.jpg)
 
-**WARNING**: to test the notebook with interactive cluster, be sure you have files in the *demo_datasets* folder in your data lake, do it **cell by cell** and start from the cell **cmd4**
+**WARNING**: to test the notebook with interactive cluster, be sure you have files in the *demo_datasets* folder in your data lake, set the parameters according the files in the folder, do it **cell by cell** and start from the cell **cmd4**
 
 ![sparkles](pictures/image449.jpg)
 
