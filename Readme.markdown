@@ -1348,7 +1348,7 @@ You have to choose for a cluster mode ![sparkles](pictures/WhiteRabbit.jpg)
 - **Standard** clusters are the default and can be used with Python, R, Scala, and SQL. Standard clusters are configured to automatically terminate after 120 minutes.
 - **High-concurrency** clusters are tuned to provide the efficient resource utilization, isolation, security, and the best performance for sharing by multiple concurrently active users. High concurrency clusters support only SQL, Python, and R languages. High concurrency clusters are configured to not terminate automatically.
 
-Select the worker type and driver typpe you need
+Select the worker type and driver type you need
 
 - **Workers** type run the Spark executors and other services required for the proper functioning of the clusters. When you distribute your workload with Spark, all of the distributed processing happens on workers.
 
