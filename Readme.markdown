@@ -1,4 +1,4 @@
-This long article will help you to prepare for passing DP 200 exam.
+This long article will help you to prepare for passing DP-200 exam.
 The first part of the article is about all the steps to build an analytic solution from scratch. And bonus, you will also get a cool demo to showcase to your customers.
 
 The second part of this article provides some tips and tricks to help you pass the exam. I highly recommend to [“follow the white rabbit”](https://www.youtube.com/watch?v=6IDT3MpSCKI) ![sparkles](pictures/WhiteRabbit.jpg).
