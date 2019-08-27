@@ -1210,7 +1210,12 @@ It could be a good idea to monitor your Azure SQL Data Warehouse, especially the
 
 This is an [article](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache) I highly recommend to read ![sparkles](pictures/WhiteRabbit.jpg).
 
-And find a room in your brain to store this table [cache hit and used percentage section](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache#cache-hit-and-used-percentage) ![sparkles](pictures/WhiteRabbit.jpg)
+And find a room in your brain to store this table 
+
+![sparkles](pictures/image450.jpg)
+
+
+[cache hit and used percentage section](https://docs.microsoft.com/en-us/azure/sql-data-warehouse/sql-data-warehouse-how-to-monitor-cache#cache-hit-and-used-percentage) ![sparkles](pictures/WhiteRabbit.jpg)
 
 
 # Backup SQL and move it to another destination #
